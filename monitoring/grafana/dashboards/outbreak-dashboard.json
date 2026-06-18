@@ -1,0 +1,98 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "id": 1,
+      "title": "Total Simulation Runs Triggered",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 8, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "sum(http_requests_total{route=\"/api/simulate\", method=\"POST\"}) or vector(0)",
+          "refId": "A",
+          "legendFormat": "Simulations Executed"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "New Disease Reports Submitted",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 8, "x": 8, "y": 0 },
+      "targets": [
+        {
+          "expr": "sum(http_requests_total{route=\"/api/reports\", method=\"POST\"}) or vector(0)",
+          "refId": "A",
+          "legendFormat": "Reports Created"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "Active Alerts Raised",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 8, "x": 16, "y": 0 },
+      "targets": [
+        {
+          "expr": "sum(http_requests_total{route=\"/api/alerts\", method=\"POST\"}) or vector(0)",
+          "refId": "A",
+          "legendFormat": "Alerts Created"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "Incident Log Updates (API Rates)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 6 },
+      "targets": [
+        {
+          "expr": "rate(http_requests_total{route=~\"/api/admin/incidents.*\"}[1m])",
+          "refId": "A",
+          "legendFormat": "Incident Action ({{method}})"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line"
+          },
+          "unit": "reqps"
+        }
+      }
+    }
+  ],
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": ["globalmedx", "business"],
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "title": "GlobalMedX - Outbreak Dashboard",
+  "uid": "gm-outbreak-dash",
+  "version": 1
+}

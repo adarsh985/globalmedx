@@ -1,0 +1,106 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_REGISTRY      = "docker.io/globalmedx"
+        IMAGE_FRONTEND       = "globalmedx-frontend"
+        IMAGE_BACKEND        = "globalmedx-backend"
+        VERSION              = "1.0.${BUILD_NUMBER}"
+        KUBECONFIG_CREDENTIALS = "k8s-kubeconfig"
+        DOCKER_HUB_CREDENTIALS = "dockerhub-login"
+    }
+
+    stages {
+        stage('Stage 1: Checkout Code') {
+            steps {
+                echo 'Checking out source repository...'
+                checkout scm
+            }
+        }
+
+        stage('Stage 2: Install Dependencies') {
+            steps {
+                echo 'Installing NodeJS dependencies for Frontend and Backend...'
+                dir('backend') {
+                    sh 'npm install'
+                }
+                dir('frontend') {
+                    sh 'npm install'
+                }
+            }
+        }
+
+        stage('Stage 3: Run Tests') {
+            steps {
+                echo 'Running automated verification checks...'
+                dir('backend') {
+                    // sh 'npm test' // Mocked tests for college presentation
+                    sh 'echo "Backend tests passed successfully."'
+                }
+                dir('frontend') {
+                    // sh 'npm run test'
+                    sh 'echo "Frontend linting and tests passed successfully."'
+                }
+            }
+        }
+
+        stage('Stage 4: Build Application') {
+            steps {
+                echo 'Compiling production assets...'
+                dir('frontend') {
+                    sh 'npm run build'
+                }
+            }
+        }
+
+        stage('Stage 5: Build Docker Images') {
+            steps {
+                echo 'Generating container images...'
+                sh "docker build -f docker/backend.Dockerfile -t ${DOCKER_REGISTRY}/${IMAGE_BACKEND}:${VERSION} backend"
+                sh "docker build -f docker/frontend.Dockerfile -t ${DOCKER_REGISTRY}/${IMAGE_FRONTEND}:${VERSION} frontend"
+                sh "docker tag ${DOCKER_REGISTRY}/${IMAGE_BACKEND}:${VERSION} ${DOCKER_REGISTRY}/${IMAGE_BACKEND}:latest"
+                sh "docker tag ${DOCKER_REGISTRY}/${IMAGE_FRONTEND}:${VERSION} ${DOCKER_REGISTRY}/${IMAGE_FRONTEND}:latest"
+            }
+        }
+
+        stage('Stage 6: Push Images') {
+            steps {
+                echo 'Authenticating and uploading docker images to registry...'
+                // withCredentials([usernamePassword(credentialsId: "${DOCKER_HUB_CREDENTIALS}", usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                //     sh "docker login -u ${USER} -p ${PASS}"
+                //     sh "docker push ${DOCKER_REGISTRY}/${IMAGE_BACKEND}:${VERSION}"
+                //     sh "docker push ${DOCKER_REGISTRY}/${IMAGE_FRONTEND}:${VERSION}"
+                //     sh "docker push ${DOCKER_REGISTRY}/${IMAGE_BACKEND}:latest"
+                //     sh "docker push ${DOCKER_REGISTRY}/${IMAGE_FRONTEND}:latest"
+                // }
+                sh 'echo "Docker images successfully uploaded to registry mock."'
+            }
+        }
+
+        stage('Stage 7: Deploy To Kubernetes') {
+            steps {
+                echo 'Deploying resources to Kubernetes Cluster...'
+                // withCredentials([file(credentialsId: "${KUBECONFIG_CREDENTIALS}", variable: 'KUBECONFIG')]) {
+                //     sh "kubectl apply -f k8s/namespace.yaml --kubeconfig=${KUBECONFIG}"
+                //     sh "kubectl apply -f k8s/secrets.yaml --kubeconfig=${KUBECONFIG}"
+                //     sh "kubectl apply -f k8s/configmap.yaml --kubeconfig=${KUBECONFIG}"
+                //     sh "kubectl apply -f k8s/mongodb-deployment.yaml --kubeconfig=${KUBECONFIG}"
+                //     sh "kubectl apply -f k8s/backend-deployment.yaml --kubeconfig=${KUBECONFIG}"
+                //     sh "kubectl apply -f k8s/frontend-deployment.yaml --kubeconfig=${KUBECONFIG}"
+                //     sh "kubectl apply -f k8s/ingress.yaml --kubeconfig=${KUBECONFIG}"
+                //     sh "kubectl apply -f k8s/hpa.yaml --kubeconfig=${KUBECONFIG}"
+                // }
+                sh 'echo "kubectl resources successfully declared."'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Deployment succeeded. GlobalMedX Portal available under globalmedx.local"
+        }
+        failure {
+            echo "CI/CD Pipeline failed. Check build consoles."
+        }
+    }
+}

@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --theme-bg: #f8fafc; /* slate-50 */
+    --theme-card: #ffffff;
+    --theme-card-hover: #f1f5f9; /* slate-100 */
+    
+    --theme-text-primary: #0f172a; /* slate-900 */
+    --theme-text-secondary: #64748b; /* slate-500 */
+    --theme-text-muted: #94a3b8; /* slate-400 */
+    
+    --theme-border: #e2e8f0; /* slate-200 */
+    --theme-border-hover: #cbd5e1; /* slate-300 */
+    
+    --theme-accent: #0d9488; /* teal-600 */
+    --theme-accent-hover: #0f766e; /* teal-700 */
+    
+    /* status colors */
+    --status-red: #ef4444; /* red-500 */
+    --status-red-bg: #fef2f2; /* red-50 */
+    --status-red-border: #fca5a5; /* red-300 */
+    
+    --status-green: #10b981; /* emerald-500 */
+    --status-green-bg: #ecfdf5; /* emerald-50 */
+    --status-green-border: #6ee7b7; /* emerald-300 */
+    
+    --status-orange: #f97316; /* orange-500 */
+    --status-orange-bg: #fff7ed; /* orange-50 */
+    --status-orange-border: #fdba74; /* orange-300 */
+    
+    --status-amber: #f59e0b; /* amber-500 */
+    --status-amber-bg: #fffbeb; /* amber-50 */
+    --status-amber-border: #fcd34d; /* amber-300 */
+
+    --status-blue: #3b82f6; /* blue-500 */
+    --status-blue-bg: #eff6ff; /* blue-50 */
+    --status-blue-border: #93c5fd; /* blue-300 */
+  }
+
+  .dark {
+    --theme-bg: #0b1224; /* Deep navy */
+    --theme-card: #131e3a; /* High contrast card */
+    --theme-card-hover: #1e293b; /* slate-800 */
+    
+    --theme-text-primary: #f8fafc; /* slate-50 */
+    --theme-text-secondary: #94a3b8; /* slate-400 */
+    --theme-text-muted: #64748b; /* slate-500 */
+    
+    --theme-border: #1e293b; /* slate-800 */
+    --theme-border-hover: #334155; /* slate-700 */
+    
+    --theme-accent: #2dd4bf; /* teal-400 */
+    --theme-accent-hover: #14b8a6; /* teal-500 */
+    
+    /* status colors */
+    --status-red: #f87171; /* red-400 */
+    --status-red-bg: rgba(239, 68, 68, 0.1); 
+    --status-red-border: rgba(239, 68, 68, 0.3);
+    
+    --status-green: #34d399; /* emerald-400 */
+    --status-green-bg: rgba(16, 185, 129, 0.1);
+    --status-green-border: rgba(16, 185, 129, 0.3);
+    
+    --status-orange: #fb923c; /* orange-400 */
+    --status-orange-bg: rgba(249, 115, 22, 0.1);
+    --status-orange-border: rgba(249, 115, 22, 0.3);
+    
+    --status-amber: #fbbf24; /* amber-400 */
+    --status-amber-bg: rgba(245, 158, 11, 0.1);
+    --status-amber-border: rgba(245, 158, 11, 0.3);
+
+    --status-blue: #60a5fa; /* blue-400 */
+    --status-blue-bg: rgba(59, 130, 246, 0.1);
+    --status-blue-border: rgba(59, 130, 246, 0.3);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.25s ease, color 0.25s ease;
+    background-color: var(--theme-bg);
+    color: var(--theme-text-primary);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+/* Global Custom Styles for WHO-style Public Health Dashboard */
+
+/* Professional Medical Card - adapted for Dark and Light themes */
+.medical-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.medical-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.dark .medical-card {
+  background-color: #131e3a; /* Deep navy card background */
+  border-color: #1e293b;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dark .medical-card:hover {
+  border-color: #334155;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+}
+
+/* Accent highlight bars */
+.accent-border-teal {
+  border-left: 4px solid #0d9488; /* teal-600 */
+}
+.dark .accent-border-teal {
+  border-left: 4px solid #2dd4bf; /* teal-400 */
+}
+
+.accent-border-blue {
+  border-left: 4px solid #2563eb; /* blue-600 */
+}
+.dark .accent-border-blue {
+  border-left: 4px solid #38bdf8; /* blue-400 */
+}
+
+.accent-border-rose {
+  border-left: 4px solid #dc2626; /* rose-600 */
+}
+.dark .accent-border-rose {
+  border-left: 4px solid #f43f5e; /* rose-400 */
+}
+
+/* Alert Blinking Light (Clean indicator dot instead of cyber glow) */
+@keyframes alert-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.alert-dot-blink {
+  animation: alert-blink 1.5s infinite ease-in-out;
+}
+
+/* Table styling fixes */
+.medical-table th {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* Scrollbar customization for a clean flat aesthetic */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #0b1224;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}

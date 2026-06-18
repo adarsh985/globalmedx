@@ -1,0 +1,139 @@
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: globalmedx-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - globalmedx-net
+
+  vault:
+    image: hashicorp/vault:1.15.2
+    container_name: globalmedx-vault
+    ports:
+      - "8200:8200"
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=globalmedx-dev-token
+      - VAULT_ADDR=http://127.0.0.1:8200
+    volumes:
+      - vault_data:/vault/file
+    cap_add:
+      - IPC_LOCK
+    networks:
+      - globalmedx-net
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.18
+    container_name: globalmedx-elasticsearch
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - globalmedx-net
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.17.18
+    container_name: globalmedx-logstash
+    volumes:
+      - ../elk/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+    ports:
+      - "5044:5044"
+    depends_on:
+      - elasticsearch
+    networks:
+      - globalmedx-net
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.18
+    container_name: globalmedx-kibana
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    networks:
+      - globalmedx-net
+
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    container_name: globalmedx-prometheus
+    volumes:
+      - ../monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    depends_on:
+      - backend
+    networks:
+      - globalmedx-net
+
+  grafana:
+    image: grafana/grafana:10.4.1
+    container_name: globalmedx-grafana
+    ports:
+      - "3001:3000"
+    volumes:
+      - ../monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - ../monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+    depends_on:
+      - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - globalmedx-net
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: ../docker/backend.Dockerfile
+    container_name: globalmedx-backend
+    ports:
+      - "5001:5000"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/globalmedx
+      - VAULT_ADDR=http://vault:8200
+      - VAULT_TOKEN=globalmedx-dev-token
+      - VAULT_SECRET_PATH=/v1/secret/data/globalmedx
+      - PORT=5000
+    depends_on:
+      - mongodb
+      - vault
+    networks:
+      - globalmedx-net
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../docker/frontend.Dockerfile
+    container_name: globalmedx-frontend
+    ports:
+      - "8080:80"
+    environment:
+      - VITE_BACKEND_URL=http://backend:5000
+    depends_on:
+      - backend
+    networks:
+      - globalmedx-net
+
+networks:
+  globalmedx-net:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+    driver: local
+  vault_data:
+    driver: local
+  elasticsearch_data:
+    driver: local

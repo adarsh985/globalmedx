@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: 'GlobalMedX Dashboards'
+    orgId: 1
+    folder: 'GlobalMedX Systems'
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards

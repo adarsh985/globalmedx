@@ -1,144 +1,88 @@
-# GlobalMedX – Worldwide Pandemic Surveillance & Response Platform
+# GlobalMedX: Worldwide Pandemic Surveillance & Response Platform
 
-GlobalMedX is an enterprise-grade, cloud-native disease surveillance and outbreak monitoring platform designed for real-time epidemic tracking, healthcare facility load audits, border screening records, and resource allocation logistics. This project demonstrates full-stack software development, automated provisioning, secrets management, container orchestration, monitoring, centralized logging, and CI/CD pipelines.
+![GlobalMedX Dashboard](docs/images/dashboard.png)
 
----
+GlobalMedX is an enterprise-grade, international public health platform designed to collect, analyze, and distribute real-time epidemiological information across the globe. During public health emergencies, this platform acts as the primary source of truth for disease tracking, outbreak prediction, resource allocation, and emergency response planning.
 
-## System Architecture Diagram
+## 🚀 Features
 
-```mermaid
-flowchart TD
-    subgraph Client Tier
-        FE[React Frontend - Vite/Tailwind]
-    end
+* **Real-Time Command Center UI:** A premium, dark/light mode React dashboard visualizing global health data with Chart.js.
+* **Outbreak Biosurveillance Map:** Visual representation of global disease hotspots.
+* **DevOps Telemetry Boards:** Live streaming of system CPU, Memory, and Prometheus API metrics directly into the frontend.
+* **Automated CI/CD:** Complete Jenkins pipeline for testing, linting, building, and pushing Docker images to Kubernetes.
+* **Centralized Logging:** ELK stack (Elasticsearch, Logstash, Kibana) integration for microservice troubleshooting.
+* **Secrets Management:** HashiCorp Vault securely manages database credentials and JWT tokens at runtime.
+* **Infrastructure as Code:** Terraform scripts included to provision multi-AZ AWS VPCs and Kubernetes Clusters.
 
-    subgraph Security & Logging
-        V[HashiCorp Vault]
-        ELK[ELK Stack: Elasticsearch/Logstash/Kibana]
-    end
+## 🏗️ Technology Stack
 
-    subgraph Service Tier
-        BE[Express API Backend]
-        P[Prometheus Metrics Scraper]
-        G[Grafana Visualization Boards]
-    end
+**Frontend:**
+* React.js (Vite)
+* Tailwind CSS (Custom Theme System)
+* Chart.js & Lucide Icons
 
-    subgraph Database Tier
-        DB[(MongoDB Database)]
-    end
+**Backend:**
+* Node.js & Express.js
+* MongoDB (Replica Sets)
+* JWT Authentication
 
-    FE -->|HTTP API Requests| BE
-    BE -->|Read/Write Records| DB
-    BE -->|Fetch Credentials| V
-    BE -->|Ship Morgan Logs| ELK
-    BE -->|Expose metrics on /metrics| P
-    P -->|Scrape| BE
-    G -->|Query metrics data| P
+**DevOps & Infrastructure:**
+* **Containers:** Docker & Docker Compose
+* **Orchestration:** Kubernetes (K8s) with Horizontal Pod Autoscaler (HPA)
+* **CI/CD:** Jenkins
+* **Monitoring:** Prometheus & Grafana
+* **Logging:** ELK Stack
+* **Secrets:** HashiCorp Vault
+* **IaC:** Terraform
+
+## ⚙️ How It Works
+
+1. **Client Tier:** The React SPA connects to the Node.js backend via RESTful JSON APIs.
+2. **Security Tier:** The Express backend authenticates on boot with HashiCorp Vault to retrieve encrypted database URIs and signing secrets.
+3. **Storage Tier:** MongoDB acts as the primary persistence layer for all hospital, outbreak, and telemetry data.
+4. **Monitoring Loop:** A Prometheus scraper polls the backend `/metrics` endpoint every 10 seconds. Grafana reads this time-series data to visualize system health. Application logs are shipped to Elasticsearch via Logstash.
+5. **Orchestration:** The entire stack is designed to be horizontally scaled via Kubernetes.
+
+## 🛠️ How to Run Locally
+
+### Prerequisites
+* Docker & Docker Compose
+* Node.js (for local non-docker testing)
+
+### Quick Start (Full DevOps Sandbox)
+
+You can spin up the entire microservices architecture (Frontend, Backend, MongoDB, Vault, ELK, Prometheus, Grafana) using Docker Compose:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/adarsh985/globalmedx.git
+cd globalmedx
+
+# 2. Launch the full stack in detached mode
+cd docker
+docker compose up -d
 ```
 
----
+### Accessing the Services
+* **GlobalMedX Portal (Frontend):** [http://localhost:3000](http://localhost:3000)
+* **Backend API Gateway:** [http://localhost:5001](http://localhost:5001)
+* **Grafana Dashboards:** [http://localhost:3001](http://localhost:3001) *(Default Login: admin / admin)*
+* **Prometheus Targets:** [http://localhost:9090](http://localhost:9090)
+* **Kibana Logs UI:** [http://localhost:5601](http://localhost:5601)
+* **HashiCorp Vault:** [http://localhost:8200](http://localhost:8200)
 
-## Project Structure
+## 📁 Repository Structure
 
-```
-globalmedx/
-├── frontend/         # React, Tailwind, Chart.js Portal
-├── backend/          # Node.js, Express, prom-client REST API
-├── database/         # MongoDB volume mappings (Local / Docker)
-├── docker/           # Dockerfiles & docker-compose configurations
-├── k8s/              # Kubernetes Deployments, Services, ConfigMaps, Secrets, HPAs, Ingress
-├── terraform/        # AWS Provider EKS Infrastructure configs (VPC, IAM, Node Groups)
-├── jenkins/          # Declarative Jenkinsfile pipeline definitions
-├── monitoring/       # Prometheus config & Grafana dashboards
-├── elk/              # Logstash pipelines & Kibana dashboard definitions
-├── vault/            # HashiCorp Vault server configs and seeds
-├── docs/             # Technical Deployment & Project Reports
-└── README.md         # Master Readme
-```
-
----
-
-## Technical Port Index
-
-| Service Name | Port | Description |
-| :--- | :--- | :--- |
-| Frontend Web Portal | `8080` (Compose) / `3000` (Local Dev) | User Interface |
-| Backend Express REST API | `5000` | Node.js Backend & `/metrics` exporter |
-| MongoDB Database | `27017` | Document Data Repository |
-| HashiCorp Vault | `8200` | Secrets Store & Web UI console |
-| Prometheus | `9090` | Time Series Scraper engine |
-| Grafana | `3000` | Visualization dashboard (Credentials: `admin/admin`) |
-| Elasticsearch | `9200` | Log Indexer engine |
-| Logstash | `5044` | Log Ingester pipeline |
-| Kibana | `5601` | Log Query GUI Panel |
+* `/frontend` - React SPA and UI components.
+* `/backend` - Node.js Express API and Mongoose schemas.
+* `/docker` - Dockerfiles and `docker-compose.yml`.
+* `/k8s` - Kubernetes YAML manifests (Deployments, Services, HPA).
+* `/terraform` - AWS Infrastructure as Code setup.
+* `/jenkins` - Declarative Jenkinsfile pipeline.
+* `/monitoring` - Prometheus & Grafana configurations.
+* `/elk` - Logstash pipeline definitions.
+* `/vault` - Vault initialization scripts.
+* `/docs` - Project documentation and guides.
 
 ---
-
-## Verification & Deployment Runbook
-
-### Option 1: Run Locally (Developer Mode)
-
-1. **Database & Vault Setup:** Ensure MongoDB is running on `mongodb://localhost:27017/`.
-2. **Start Backend:**
-   ```bash
-   cd backend
-   npm install
-   npm run dev
-   ```
-3. **Start Frontend:**
-   ```bash
-   cd ../frontend
-   npm install
-   npm run dev
-   ```
-4. Access the portal at `http://localhost:3000`. Authenticate using:
-   - Admin: `admin@globalmedx.gov` / `admin123`
-   - Officer: `officer@globalmedx.gov` / `officer123`
-
----
-
-### Option 2: Run with Docker Compose (All Services Containerized)
-
-1. **Boot all container services:**
-   ```bash
-   cd docker
-   docker-compose up --build -d
-   ```
-2. **Initialize & Seed Vault Credentials:**
-   Wait 10 seconds for the containers to fully start, then run:
-   ```bash
-   cd ../vault
-   chmod +x init-vault.sh
-   ./init-vault.sh
-   ```
-3. **Explore Dashboard Panels:**
-   - Frontend Portal: `http://localhost:8080`
-   - Backend APIs: `http://localhost:5000/api/health`
-   - Prometheus metrics: `http://localhost:9090`
-   - Grafana monitoring boards: `http://localhost:3000` (Credentials: `admin/admin`)
-   - Kibana centralized logs: `http://localhost:5601`
-
----
-
-### Option 3: Deploy to Kubernetes Cluster (Minikube / Cloud)
-
-1. **Point your shell to the namespace folder:**
-   ```bash
-   cd k8s
-   ```
-2. **Apply resources in order:**
-   ```bash
-   kubectl apply -f namespace.yaml
-   kubectl apply -f secrets.yaml
-   kubectl apply -f configmap.yaml
-   kubectl apply -f mongodb-deployment.yaml
-   kubectl apply -f backend-deployment.yaml
-   kubectl apply -f frontend-deployment.yaml
-   kubectl apply -f ingress.yaml
-   kubectl apply -f hpa.yaml
-   ```
-3. **Resolve Hostname Mapping:** Add EKS LoadBalancer IP or Minikube IP to `/etc/hosts`:
-   ```text
-   <IP-ADDRESS> globalmedx.local
-   ```
-4. Access `http://globalmedx.local` to verify.
+*Built as a comprehensive DevOps and Cloud Native Architecture demonstration.*

@@ -22,7 +22,7 @@ const AdminPortal = ({ health, users }) => {
             <span className="text-3xl font-extrabold text-theme-text">ONLINE</span>
             <span className="text-xs font-semibold text-status-green">HTTP {health?.status || 'UP'}</span>
           </div>
-          <p className="text-xs text-theme-text-muted mt-2 font-mono">Server Uptime: {health?.uptime || 'N/A'}</p>
+          <p className="text-xs text-theme-text-sec mt-2 font-mono">Server Uptime: {health?.uptime || 'N/A'}</p>
         </div>
 
         {/* DATABASE STATUS */}
@@ -34,7 +34,7 @@ const AdminPortal = ({ health, users }) => {
           <div className="flex items-baseline gap-2 mt-4">
             <span className="text-3xl font-extrabold text-theme-text">CONNECTED</span>
           </div>
-          <p className="text-xs text-theme-text-muted mt-2 font-mono">Status: {health?.database || 'Healthy'}</p>
+          <p className="text-xs text-theme-text-sec mt-2 font-mono">Status: {health?.database || 'Healthy'}</p>
         </div>
 
         {/* NODE RAM ALLOCATION */}
@@ -46,13 +46,13 @@ const AdminPortal = ({ health, users }) => {
           <div className="flex items-baseline gap-2 mt-4">
             <span className="text-3xl font-extrabold text-theme-text">{health?.processDetails?.memoryHeapUsed || 'N/A'}</span>
           </div>
-          <p className="text-xs text-theme-text-muted mt-2 font-mono">Heap Total: {health?.processDetails?.memoryHeapTotal || 'N/A'}</p>
+          <p className="text-xs text-theme-text-sec mt-2 font-mono">Heap Total: {health?.processDetails?.memoryHeapTotal || 'N/A'}</p>
         </div>
       </div>
 
       {/* USER DIRECTORY */}
       <div className="glass-panel rounded-2xl border border-theme-border overflow-hidden">
-        <div className="p-6 border-b border-theme-border bg-theme-card/20">
+        <div className="p-6 border-b border-theme-border bg-theme-card">
           <h2 className="text-lg font-bold flex items-center gap-2 text-theme-text">
             <ShieldCheck className="w-5 h-5 text-status-green" />
             Registered Operators Directory
@@ -61,17 +61,17 @@ const AdminPortal = ({ health, users }) => {
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-theme-border text-theme-text-sec text-xs uppercase font-semibold bg-theme-card/40">
+              <tr className="border-b border-theme-border text-theme-text-sec text-xs uppercase font-semibold bg-slate-100/40 dark:bg-slate-800/40">
                 <th className="p-4 pl-6">Operator Name</th>
                 <th className="p-4">Email ID</th>
                 <th className="p-4">Assigned Role</th>
                 <th className="p-4 pr-6">Created On</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800 text-sm font-medium">
+            <tbody className="divide-y divide-theme-border text-sm font-medium">
               {users.length > 0 ? (
                 users.map((user) => (
-                  <tr key={user._id} className="hover:bg-theme-bg/20">
+                  <tr key={user._id} className="hover:bg-theme-card-hover">
                     <td className="p-4 pl-6 text-theme-text font-semibold flex items-center gap-2">
                       <Key className="w-4 h-4 text-status-blue" />
                       {user.name}
@@ -80,7 +80,7 @@ const AdminPortal = ({ health, users }) => {
                     <td className="p-4">
                       <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] uppercase font-mono font-bold ${
                         user.role === 'admin' 
-                          ? 'bg-status-red-bg text-status-red border border-rose-500/20' 
+                          ? 'bg-status-red-bg text-status-red border border-status-red-border' 
                           : 'bg-status-blue-bg text-status-blue border border-blue-500/20'
                       }`}>
                         {user.role}
@@ -93,7 +93,7 @@ const AdminPortal = ({ health, users }) => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="p-8 text-center text-theme-text-muted">
+                  <td colSpan="4" className="p-8 text-center text-theme-text-sec">
                     No operator accounts found.
                   </td>
                 </tr>

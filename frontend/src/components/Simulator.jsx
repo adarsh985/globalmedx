@@ -34,7 +34,7 @@ const Simulator = ({ onTriggerSimulation }) => {
       title: 'Global Pandemic Surge',
       description: 'Increases case counts across all reports by 15-30%, launches critical alarms, and records a new monitoring node.',
       icon: ShieldAlert,
-      color: 'text-status-red border-rose-500/20 hover:border-rose-500/40 bg-rose-500/5 hover:bg-status-red-bg',
+      color: 'text-status-red border-status-red-border hover:border-rose-500/40 bg-rose-500/5 hover:bg-status-red-bg',
       category: 'Surveillance'
     },
     {
@@ -66,7 +66,7 @@ const Simulator = ({ onTriggerSimulation }) => {
       title: 'Cyberattack Blockade',
       description: 'Simulates high-volume DDoS packets targeting API REST endpoints, auditing Web Application Firewall defense rules.',
       icon: ShieldAlert,
-      color: 'text-theme-accent border-purple-500/20 hover:border-purple-500/40 bg-purple-500/5 hover:bg-theme-accent/10',
+      color: 'text-theme-accent border-purple-500/20 hover:border-purple-500/40 bg-purple-500/5 hover:bg-emerald-500/10',
       category: 'Security WAF'
     },
     {
@@ -99,8 +99,8 @@ const Simulator = ({ onTriggerSimulation }) => {
       {feedback && (
         <div className={`p-4 rounded-xl border flex gap-3 items-center animate-fadeIn ${
           feedback.success 
-            ? 'bg-status-green-bg border-emerald-500/20 text-emerald-300' 
-            : 'bg-status-red-bg border-rose-500/20 text-rose-300'
+            ? 'bg-status-green-bg border-status-green-border text-status-green' 
+            : 'bg-status-red-bg border-status-red-border text-status-red'
         }`}>
           {feedback.success ? (
             <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-status-green" />
@@ -130,7 +130,7 @@ const Simulator = ({ onTriggerSimulation }) => {
               <button 
                 onClick={() => handleSimulate(card.id)}
                 disabled={loadingType !== null}
-                className="mt-8 flex items-center justify-center gap-2 w-full py-3 bg-theme-card border border-slate-750 hover:bg-theme-bg text-sm font-bold rounded-xl transition-all disabled:opacity-50 text-theme-text"
+                className="mt-8 flex items-center justify-center gap-2 w-full py-3 bg-theme-card border border-theme-border hover:bg-theme-bg text-sm font-bold rounded-xl transition-all disabled:opacity-50 text-theme-text"
               >
                 {isCurrentLoading ? (
                   <>
@@ -139,7 +139,7 @@ const Simulator = ({ onTriggerSimulation }) => {
                   </>
                 ) : (
                   <>
-                    <Play className="w-4 h-4 fill-white" />
+                    <Play className="w-4 h-4 fill-current" />
                     Launch Simulation
                   </>
                 )}
@@ -162,7 +162,7 @@ const Simulator = ({ onTriggerSimulation }) => {
             <select 
               value={selectedCountry}
               onChange={(e) => setSelectedCountry(e.target.value)}
-              className="w-full bg-slate-850 border border-slate-750 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500 text-theme-text"
+              className="w-full bg-theme-bg border border-theme-border px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
             >
               <option value="United States">United States</option>
               <option value="India">India</option>
@@ -179,7 +179,7 @@ const Simulator = ({ onTriggerSimulation }) => {
             <select 
               value={selectedDisease}
               onChange={(e) => setSelectedDisease(e.target.value)}
-              className="w-full bg-slate-850 border border-slate-750 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500 text-theme-text"
+              className="w-full bg-theme-bg border border-theme-border px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
             >
               <option value="COVID-19">COVID-19</option>
               <option value="Dengue Fever">Dengue Fever</option>
@@ -204,7 +204,7 @@ const Simulator = ({ onTriggerSimulation }) => {
               </>
             ) : (
               <>
-                <Play className="w-4.5 h-4.5 fill-white" />
+                <Play className="w-4.5 h-4.5 fill-current" />
                 Simulate Local Surge
               </>
             )}

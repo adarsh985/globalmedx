@@ -52,7 +52,7 @@ const AnimatedCounter = ({ value, duration = 1000 }) => {
   return <span>{typeof displayValue === 'number' ? displayValue.toLocaleString() : displayValue}</span>;
 };
 
-const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimulation, onTabChange }) => {
+const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimulation, onTabChange, onResolveAlert }) => {
   const [hoveredOutbreak, setHoveredOutbreak] = useState(null);
   const [localOutbreaks, setLocalOutbreaks] = useState([]);
   const [loadingMap, setLoadingMap] = useState(false);
@@ -114,7 +114,7 @@ const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimu
       value: stats?.activeCases || 0, 
       icon: TrendingUp, 
       color: 'text-theme-accent', 
-      bg: 'bg-theme-accent/10',
+      bg: 'bg-emerald-500/10',
       border: 'accent-border-teal'
     },
     { 
@@ -261,17 +261,17 @@ const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimu
             
             {/* Map continent geometries */}
             {/* Greenland */}
-            <path d="M 220,30 L 280,35 L 250,70 L 210,65 Z" className="fill-theme-border/60 stroke-theme-border-hover transition-colors" strokeWidth="1" />
+            <path d="M 220,30 L 280,35 L 250,70 L 210,65 Z" className="fill-theme-card-hover stroke-theme-border transition-colors" strokeWidth="1" />
             {/* North America */}
-            <path d="M 50,50 L 150,50 L 220,120 L 180,180 L 150,150 L 110,180 L 70,120 Z" className="fill-theme-border/60 stroke-theme-border-hover transition-colors" strokeWidth="1" />
+            <path d="M 50,50 L 150,50 L 220,120 L 180,180 L 150,150 L 110,180 L 70,120 Z" className="fill-theme-card-hover stroke-theme-border transition-colors" strokeWidth="1" />
             {/* South America */}
-            <path d="M 180,180 L 220,180 L 240,250 L 200,380 L 170,300 L 160,220 Z" className="fill-theme-border/60 stroke-theme-border-hover transition-colors" strokeWidth="1" />
+            <path d="M 180,180 L 220,180 L 240,250 L 200,380 L 170,300 L 160,220 Z" className="fill-theme-card-hover stroke-theme-border transition-colors" strokeWidth="1" />
             {/* Eurasia */}
-            <path d="M 350,30 L 750,30 L 780,120 L 700,200 L 600,220 L 520,200 L 480,240 L 400,200 L 350,120 Z" className="fill-theme-border/60 stroke-theme-border-hover transition-colors" strokeWidth="1" />
+            <path d="M 350,30 L 750,30 L 780,120 L 700,200 L 600,220 L 520,200 L 480,240 L 400,200 L 350,120 Z" className="fill-theme-card-hover stroke-theme-border transition-colors" strokeWidth="1" />
             {/* Africa */}
-            <path d="M 380,150 L 480,150 L 520,220 L 480,320 L 440,350 L 380,250 Z" className="fill-theme-border/60 stroke-theme-border-hover transition-colors" strokeWidth="1" />
+            <path d="M 380,150 L 480,150 L 520,220 L 480,320 L 440,350 L 380,250 Z" className="fill-theme-card-hover stroke-theme-border transition-colors" strokeWidth="1" />
             {/* Australia */}
-            <path d="M 650,260 L 730,260 L 750,320 L 670,320 Z" className="fill-theme-border/60 stroke-theme-border-hover transition-colors" strokeWidth="1" />
+            <path d="M 650,260 L 730,260 L 750,320 L 670,320 Z" className="fill-theme-card-hover stroke-theme-border transition-colors" strokeWidth="1" />
 
             {/* Draw Outbreak pulsing Beacons */}
             {localOutbreaks.map((h, i) => {
@@ -337,12 +337,12 @@ const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimu
                 <span className="font-bold text-theme-text uppercase tracking-wide">{hoveredOutbreak.country}</span>
               </div>
               <div className="space-y-1">
-                <p><span className="text-theme-text-muted">Pathogen:</span> <span className="text-theme-accent font-semibold">{hoveredOutbreak.disease}</span></p>
-                <p><span className="text-theme-text-muted">Latitude:</span> {hoveredOutbreak.lat.toFixed(4)}°</p>
-                <p><span className="text-theme-text-muted">Longitude:</span> {hoveredOutbreak.lng.toFixed(4)}°</p>
-                <p><span className="text-theme-text-muted">Active Cases:</span> <span className={hoveredOutbreak.intensity > 1000 ? 'text-status-red font-bold' : 'text-theme-accent font-bold'}>{hoveredOutbreak.intensity.toLocaleString()}</span></p>
+                <p><span className="text-theme-text-sec">Pathogen:</span> <span className="text-theme-accent font-semibold">{hoveredOutbreak.disease}</span></p>
+                <p><span className="text-theme-text-sec">Latitude:</span> {hoveredOutbreak.lat.toFixed(4)}°</p>
+                <p><span className="text-theme-text-sec">Longitude:</span> {hoveredOutbreak.lng.toFixed(4)}°</p>
+                <p><span className="text-theme-text-sec">Active Cases:</span> <span className={hoveredOutbreak.intensity > 1000 ? 'text-status-red font-bold' : 'text-theme-accent font-bold'}>{hoveredOutbreak.intensity.toLocaleString()}</span></p>
               </div>
-              <div className="text-[9px] text-theme-text-muted text-right border-t border-theme-border pt-1">
+              <div className="text-[9px] text-theme-text-sec text-right border-t border-theme-border pt-1">
                 GPS BIO-GRID TELEMETRY
               </div>
             </div>
@@ -368,7 +368,7 @@ const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimu
             {stats?.highRiskRegions?.length > 0 ? (
               <table className="w-full text-left medical-table">
                 <thead>
-                  <tr className="border-b border-theme-border text-theme-text-muted text-xs uppercase font-semibold">
+                  <tr className="border-b border-theme-border text-theme-text-sec text-xs uppercase font-semibold">
                     <th className="pb-3">Country</th>
                     <th className="pb-3">Primary Pathogen</th>
                     <th className="pb-3 text-right">Active Cases</th>
@@ -395,7 +395,7 @@ const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimu
                 </tbody>
               </table>
             ) : (
-              <div className="h-full flex flex-col items-center justify-center py-12 text-theme-text-muted">
+              <div className="h-full flex flex-col items-center justify-center py-12 text-theme-text-sec">
                 <Award className="w-12 h-12 mb-3 text-status-green opacity-40" />
                 <p>No high-risk disease clusters detected.</p>
               </div>
@@ -404,7 +404,7 @@ const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimu
         </div>
 
         {/* ACTIVE ALERTS - ALARM BROADCAST PANEL WITH FLASHING ALERTS */}
-        <div className="medical-card p-6 flex flex-col justify-between">
+        <div id="emergency-bulletins" className="medical-card p-6 flex flex-col justify-between transition-all duration-500">
           <div>
             <div className="flex items-center justify-between mb-6 border-b border-theme-border pb-4">
               <h2 className="text-lg font-bold flex items-center gap-2 text-theme-text">
@@ -418,7 +418,7 @@ const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimu
                 activeAlerts.map((alert) => (
                   <div 
                     key={alert._id} 
-                    className={`p-4 rounded-xl border flex gap-3 ${
+                    className={`p-4 rounded-xl border flex gap-3 relative group ${
                       alert.level === 'Danger' 
                         ? 'bg-status-red-bg border-status-red-border text-theme-text' 
                         : alert.level === 'Warning' 
@@ -429,22 +429,31 @@ const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimu
                     <AlertCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
                       alert.level === 'Danger' ? 'text-status-red alert-dot-blink' : alert.level === 'Warning' ? 'text-status-orange' : 'text-status-blue'
                     }`} />
-                    <div>
+                    <div className="flex-1">
                       <h3 className="font-bold text-sm text-theme-text">{alert.title}</h3>
                       <p className="text-xs mt-1 text-theme-text-sec leading-relaxed">{alert.description}</p>
                     </div>
+                    {onResolveAlert && (
+                      <button
+                        onClick={() => onResolveAlert(alert._id)}
+                        className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-theme-text-sec hover:bg-theme-bg hover:text-status-red transition-all opacity-60 group-hover:opacity-100"
+                        title="Dismiss Alert"
+                      >
+                        <span className="text-xs font-bold">✕</span>
+                      </button>
+                    )}
                   </div>
                 ))
               ) : (
-                <div className="text-center py-16 text-theme-text-muted flex flex-col items-center justify-center">
+                <div className="text-center py-16 text-theme-text-sec flex flex-col items-center justify-center">
                   <ShieldCheck className="w-12 h-12 text-theme-accent mb-3 opacity-60" />
                   <p className="font-bold text-xs uppercase tracking-wider text-theme-accent">All Sectors Stable</p>
-                  <p className="text-[11px] text-theme-text-muted mt-1">No emergency broadcasts active.</p>
+                  <p className="text-[11px] text-theme-text-sec mt-1">No emergency broadcasts active.</p>
                 </div>
               )}
             </div>
           </div>
-          <div className="border-t border-theme-border pt-4 mt-4 flex justify-between items-center text-[10px] font-mono text-theme-text-muted">
+          <div className="border-t border-theme-border pt-4 mt-4 flex justify-between items-center text-[10px] font-mono text-theme-text-sec">
             <span>Threat Assessment Status: DEFCON 4</span>
             <span className="w-2 h-2 rounded-full bg-status-green" />
           </div>

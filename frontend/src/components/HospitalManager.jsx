@@ -117,15 +117,15 @@ const HospitalManager = ({ hospitals, onRegisterHospital, onUpdateHospital, onDe
 
                   {/* BED STATS */}
                   <div className="grid grid-cols-3 gap-4 mt-6">
-                    <div className="bg-theme-card-hover p-3 rounded-xl border border-theme-border/50">
+                    <div className="bg-theme-card-hover p-3 rounded-xl border border-slate-300/50 dark:border-slate-700/50">
                       <p className="text-[10px] text-theme-text-sec font-semibold uppercase tracking-wider">Total Beds</p>
                       <p className="text-lg font-bold text-theme-text mt-1">{hosp.totalBeds.toLocaleString()}</p>
                     </div>
-                    <div className="bg-theme-card-hover p-3 rounded-xl border border-theme-border/50">
+                    <div className="bg-theme-card-hover p-3 rounded-xl border border-slate-300/50 dark:border-slate-700/50">
                       <p className="text-[10px] text-theme-text-sec font-semibold uppercase tracking-wider">Available</p>
                       <p className="text-lg font-bold text-status-green mt-1">{hosp.availableBeds.toLocaleString()}</p>
                     </div>
-                    <div className="bg-theme-card-hover p-3 rounded-xl border border-theme-border/50">
+                    <div className="bg-theme-card-hover p-3 rounded-xl border border-slate-300/50 dark:border-slate-700/50">
                       <p className="text-[10px] text-theme-text-sec font-semibold uppercase tracking-wider">Active Cases</p>
                       <p className="text-lg font-bold text-status-orange mt-1">{hosp.activeCases.toLocaleString()}</p>
                     </div>
@@ -161,8 +161,8 @@ const HospitalManager = ({ hospitals, onRegisterHospital, onUpdateHospital, onDe
             );
           })
         ) : (
-          <div className="md:col-span-2 glass-panel p-12 text-center text-theme-text-muted rounded-2xl">
-            <Building2 className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+          <div className="md:col-span-2 glass-panel p-12 text-center text-theme-text-sec rounded-2xl">
+            <Building2 className="w-12 h-12 text-theme-text-sec mx-auto mb-3" />
             <p>No medical facilities registered in the database.</p>
           </div>
         )}
@@ -170,7 +170,7 @@ const HospitalManager = ({ hospitals, onRegisterHospital, onUpdateHospital, onDe
 
       {/* REGISTRATION MODAL */}
       {showModal && (
-        <div className="fixed inset-0 bg-theme-bg/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
+        <div className="fixed inset-0 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
           <div className="bg-theme-card border border-theme-border w-full max-w-lg rounded-2xl shadow-2xl p-6 relative">
             <button 
               onClick={() => setShowModal(false)}
@@ -191,7 +191,7 @@ const HospitalManager = ({ hospitals, onRegisterHospital, onUpdateHospital, onDe
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Mayo Clinic"
-                  className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                 />
               </div>
 
@@ -204,7 +204,7 @@ const HospitalManager = ({ hospitals, onRegisterHospital, onUpdateHospital, onDe
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
                     placeholder="e.g. United States"
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
                 <div>
@@ -215,7 +215,7 @@ const HospitalManager = ({ hospitals, onRegisterHospital, onUpdateHospital, onDe
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     placeholder="e.g. Rochester"
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
               </div>
@@ -229,7 +229,7 @@ const HospitalManager = ({ hospitals, onRegisterHospital, onUpdateHospital, onDe
                     required
                     value={totalBeds}
                     onChange={(e) => setTotalBeds(e.target.value)}
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
                 <div>
@@ -240,7 +240,7 @@ const HospitalManager = ({ hospitals, onRegisterHospital, onUpdateHospital, onDe
                     required
                     value={availableBeds}
                     onChange={(e) => setAvailableBeds(e.target.value)}
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
                 <div>
@@ -251,7 +251,7 @@ const HospitalManager = ({ hospitals, onRegisterHospital, onUpdateHospital, onDe
                     required
                     value={activeCases}
                     onChange={(e) => setActiveCases(e.target.value)}
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
               </div>
@@ -264,7 +264,7 @@ const HospitalManager = ({ hospitals, onRegisterHospital, onUpdateHospital, onDe
                   value={contactNumber}
                   onChange={(e) => setContactNumber(e.target.value)}
                   placeholder="e.g. +1-800-555-0199"
-                  className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                 />
               </div>
 

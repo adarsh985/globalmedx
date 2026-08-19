@@ -32,8 +32,6 @@ const Analytics = ({ data }) => {
     blueBorder: '#38bdf8',
     emeraldBorder: '#10b981',
     roseBorder: '#ef4444',
-    orangeBorder: '#f97316',
-    purpleBorder: '#a855f7',
     
     // Doughnut chart fills (static colors)
     rose: 'rgba(244, 63, 94, 0.8)',
@@ -48,39 +46,26 @@ const Analytics = ({ data }) => {
   const countryCases = data?.byCountry?.map(c => c.cases) || [];
   const countryRecoveries = data?.byCountry?.map(c => c.recoveries) || [];
   
-  const getBarData = (canvas) => {
-    const ctx = canvas.getContext('2d');
-    const height = canvas.height || 250;
-
-    const gradBlueBar = ctx.createLinearGradient(0, 0, 0, height);
-    gradBlueBar.addColorStop(0, 'rgba(56, 189, 248, 0.85)');
-    gradBlueBar.addColorStop(1, 'rgba(56, 189, 248, 0.2)');
-
-    const gradGreenBar = ctx.createLinearGradient(0, 0, 0, height);
-    gradGreenBar.addColorStop(0, 'rgba(16, 185, 129, 0.85)');
-    gradGreenBar.addColorStop(1, 'rgba(16, 185, 129, 0.2)');
-
-    return {
-      labels: countryLabels,
-      datasets: [
-        {
-          label: 'Total Cases',
-          data: countryCases,
-          backgroundColor: gradBlueBar,
-          borderColor: colors.blueBorder,
-          borderWidth: 1,
-          borderRadius: 4
-        },
-        {
-          label: 'Recoveries',
-          data: countryRecoveries,
-          backgroundColor: gradGreenBar,
-          borderColor: colors.emeraldBorder,
-          borderWidth: 1,
-          borderRadius: 4
-        }
-      ]
-    };
+  const barData = {
+    labels: countryLabels,
+    datasets: [
+      {
+        label: 'Total Cases',
+        data: countryCases,
+        backgroundColor: 'rgba(56, 189, 248, 0.6)',
+        borderColor: colors.blueBorder,
+        borderWidth: 1,
+        borderRadius: 4
+      },
+      {
+        label: 'Recoveries',
+        data: countryRecoveries,
+        backgroundColor: 'rgba(16, 185, 129, 0.6)',
+        borderColor: colors.emeraldBorder,
+        borderWidth: 1,
+        borderRadius: 4
+      }
+    ]
   };
 
   // 2. Cases by Disease Doughnut Data
@@ -110,69 +95,52 @@ const Analytics = ({ data }) => {
   const trendDeaths = data?.monthlyTrends?.map(t => t.deaths) || [];
   const trendRecoveries = data?.monthlyTrends?.map(t => t.recoveries) || [];
 
-  const getLineData = (canvas) => {
-    const ctx = canvas.getContext('2d');
-    const height = canvas.height || 350;
-    
-    const gradBlue = ctx.createLinearGradient(0, 0, 0, height);
-    gradBlue.addColorStop(0, 'rgba(56, 189, 248, 0.35)');
-    gradBlue.addColorStop(1, 'rgba(56, 189, 248, 0.01)');
-
-    const gradGreen = ctx.createLinearGradient(0, 0, 0, height);
-    gradGreen.addColorStop(0, 'rgba(16, 185, 129, 0.35)');
-    gradGreen.addColorStop(1, 'rgba(16, 185, 129, 0.01)');
-
-    const gradRose = ctx.createLinearGradient(0, 0, 0, height);
-    gradRose.addColorStop(0, 'rgba(239, 68, 68, 0.35)');
-    gradRose.addColorStop(1, 'rgba(239, 68, 68, 0.01)');
-
-    return {
-      labels: trendMonths,
-      datasets: [
-        {
-          label: 'Cases Trend',
-          data: trendCases,
-          borderColor: colors.blueBorder,
-          backgroundColor: gradBlue,
-          tension: 0.35,
-          fill: true,
-          borderWidth: 3,
-          pointBackgroundColor: colors.blueBorder,
-          pointBorderColor: isDark ? '#131e3a' : '#ffffff', // --theme-card
-          pointBorderWidth: 1.5,
-          pointHoverRadius: 6,
-          pointRadius: 4
-        },
-        {
-          label: 'Recoveries Trend',
-          data: trendRecoveries,
-          borderColor: colors.emeraldBorder,
-          backgroundColor: gradGreen,
-          tension: 0.35,
-          fill: true,
-          borderWidth: 2.5,
-          pointBackgroundColor: colors.emeraldBorder,
-          pointBorderColor: isDark ? '#131e3a' : '#ffffff',
-          pointBorderWidth: 1.5,
-          pointHoverRadius: 5,
-          pointRadius: 3.5
-        },
-        {
-          label: 'Deaths Trend',
-          data: trendDeaths,
-          borderColor: colors.roseBorder,
-          backgroundColor: gradRose,
-          tension: 0.35,
-          fill: true,
-          borderWidth: 2,
-          pointBackgroundColor: colors.roseBorder,
-          pointBorderColor: isDark ? '#131e3a' : '#ffffff',
-          pointBorderWidth: 1.5,
-          pointHoverRadius: 5,
-          pointRadius: 3.5
-        }
-      ]
-    };
+  const lineData = {
+    labels: trendMonths,
+    datasets: [
+      {
+        label: 'Cases Trend',
+        data: trendCases,
+        borderColor: colors.blueBorder,
+        backgroundColor: 'rgba(56, 189, 248, 0.15)',
+        tension: 0.35,
+        fill: true,
+        borderWidth: 3,
+        pointBackgroundColor: colors.blueBorder,
+        pointBorderColor: isDark ? '#131e3a' : '#ffffff', // --theme-card
+        pointBorderWidth: 1.5,
+        pointHoverRadius: 6,
+        pointRadius: 4
+      },
+      {
+        label: 'Recoveries Trend',
+        data: trendRecoveries,
+        borderColor: colors.emeraldBorder,
+        backgroundColor: 'rgba(16, 185, 129, 0.15)',
+        tension: 0.35,
+        fill: true,
+        borderWidth: 2.5,
+        pointBackgroundColor: colors.emeraldBorder,
+        pointBorderColor: isDark ? '#131e3a' : '#ffffff',
+        pointBorderWidth: 1.5,
+        pointHoverRadius: 5,
+        pointRadius: 3.5
+      },
+      {
+        label: 'Deaths Trend',
+        data: trendDeaths,
+        borderColor: colors.roseBorder,
+        backgroundColor: 'rgba(239, 68, 68, 0.15)',
+        tension: 0.35,
+        fill: true,
+        borderWidth: 2,
+        pointBackgroundColor: colors.roseBorder,
+        pointBorderColor: isDark ? '#131e3a' : '#ffffff',
+        pointBorderWidth: 1.5,
+        pointHoverRadius: 5,
+        pointRadius: 3.5
+      }
+    ]
   };
 
   // Theme-aware Chart Configuration
@@ -226,7 +194,7 @@ const Analytics = ({ data }) => {
           Pandemic Aggregated Monthly Trends (Last 6 Months)
         </h2>
         <div className="h-96">
-          <Line data={getLineData} options={options} />
+          <Line data={lineData} options={options} />
         </div>
       </div>
 
@@ -238,7 +206,7 @@ const Analytics = ({ data }) => {
             Cases and Recoveries by Country
           </h2>
           <div className="h-80">
-            <Bar data={getBarData} options={options} />
+            <Bar data={barData} options={options} />
           </div>
         </div>
 
@@ -259,7 +227,7 @@ const Analytics = ({ data }) => {
                 className="z-10"
               />
             ) : (
-              <p className="text-slate-500 text-sm">No disease distributions to display.</p>
+              <p className="text-theme-text-sec text-sm">No disease distributions to display.</p>
             )}
           </div>
         </div>

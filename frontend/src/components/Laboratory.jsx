@@ -118,7 +118,7 @@ const Laboratory = ({ labs, onRegisterLab, onUpdateLab, onDeleteLab }) => {
                   </div>
 
                   {/* DIAGNOSTIC GRAPHICS */}
-                  <div className="mt-6 p-4 rounded-xl bg-theme-card/40 border border-slate-850 flex items-center justify-between text-xs">
+                  <div className="mt-6 p-4 rounded-xl bg-slate-100/40 dark:bg-slate-800/40 border border-slate-800 flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-status-green" />
                       <span className="text-theme-text-sec font-semibold">Positivity Index:</span>
@@ -132,7 +132,7 @@ const Laboratory = ({ labs, onRegisterLab, onUpdateLab, onDeleteLab }) => {
                 <div className="flex gap-2 justify-end mt-6 pt-4 border-t border-theme-border">
                   <button 
                     onClick={() => openEditModal(lab)}
-                    className="text-xs px-3 py-1.5 bg-slate-850 hover:bg-theme-bg rounded-lg text-status-blue font-semibold transition-colors"
+                    className="text-xs px-3 py-1.5 bg-theme-bg hover:bg-theme-card-hover rounded-lg text-status-blue font-semibold transition-colors"
                   >
                     Edit Logs
                   </button>
@@ -150,8 +150,8 @@ const Laboratory = ({ labs, onRegisterLab, onUpdateLab, onDeleteLab }) => {
             );
           })
         ) : (
-          <div className="lg:col-span-3 glass-panel p-12 text-center text-theme-text-muted rounded-2xl">
-            <Microscope className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+          <div className="lg:col-span-3 glass-panel p-12 text-center text-theme-text-sec rounded-2xl">
+            <Microscope className="w-12 h-12 text-theme-text-sec mx-auto mb-3" />
             <p>No laboratories registered in the system database.</p>
           </div>
         )}
@@ -159,7 +159,7 @@ const Laboratory = ({ labs, onRegisterLab, onUpdateLab, onDeleteLab }) => {
 
       {/* REGISTRATION MODAL */}
       {showModal && (
-        <div className="fixed inset-0 bg-theme-bg/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
+        <div className="fixed inset-0 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
           <div className="bg-theme-card border border-theme-border w-full max-w-lg rounded-2xl shadow-2xl p-6 relative">
             <button 
               onClick={() => setShowModal(false)}
@@ -180,7 +180,7 @@ const Laboratory = ({ labs, onRegisterLab, onUpdateLab, onDeleteLab }) => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Pasteur Laboratory"
-                  className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                 />
               </div>
 
@@ -193,7 +193,7 @@ const Laboratory = ({ labs, onRegisterLab, onUpdateLab, onDeleteLab }) => {
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
                     placeholder="e.g. France"
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
                 <div>
@@ -204,7 +204,7 @@ const Laboratory = ({ labs, onRegisterLab, onUpdateLab, onDeleteLab }) => {
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     placeholder="e.g. Paris"
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
               </div>
@@ -217,7 +217,7 @@ const Laboratory = ({ labs, onRegisterLab, onUpdateLab, onDeleteLab }) => {
                   value={primaryFocus}
                   onChange={(e) => setPrimaryFocus(e.target.value)}
                   placeholder="e.g. Coronavirus Research"
-                  className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                 />
               </div>
 
@@ -230,7 +230,7 @@ const Laboratory = ({ labs, onRegisterLab, onUpdateLab, onDeleteLab }) => {
                     required
                     value={testsConducted}
                     onChange={(e) => setTestsConducted(e.target.value)}
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
                 <div>
@@ -241,7 +241,7 @@ const Laboratory = ({ labs, onRegisterLab, onUpdateLab, onDeleteLab }) => {
                     required
                     value={positiveResults}
                     onChange={(e) => setPositiveResults(e.target.value)}
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
                 <div>
@@ -252,7 +252,7 @@ const Laboratory = ({ labs, onRegisterLab, onUpdateLab, onDeleteLab }) => {
                     required
                     value={negativeResults}
                     onChange={(e) => setNegativeResults(e.target.value)}
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
               </div>

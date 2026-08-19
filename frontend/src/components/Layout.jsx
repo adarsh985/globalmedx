@@ -78,12 +78,12 @@ const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, acti
         {/* LOGO */}
         <div className="h-16 flex items-center px-6 border-b border-theme-border">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-theme-accent flex items-center justify-center shadow-md shadow-theme-accent/20">
+            <div className="w-8 h-8 rounded-lg bg-theme-accent flex items-center justify-center shadow-md shadow-emerald-500/20">
               <span className="text-lg text-white">🩺</span>
             </div>
             <div>
               <span className="font-bold text-lg tracking-wider font-mono text-theme-accent">GLOBALMEDX</span>
-              <p className="text-[10px] text-theme-text-muted font-semibold tracking-widest uppercase">Pandemic Surveillance</p>
+              <p className="text-[10px] text-theme-text-sec font-semibold tracking-widest uppercase">Pandemic Surveillance</p>
             </div>
           </div>
         </div>
@@ -99,11 +99,11 @@ const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, acti
                 onClick={() => setActiveTab(item.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-250 ${
                   isActive 
-                    ? 'bg-theme-accent/10 text-theme-accent border-l-4 border-theme-accent pl-3' 
+                    ? 'bg-emerald-500/10 text-theme-accent border-l-4 border-theme-accent pl-3' 
                     : 'text-theme-text-sec hover:bg-theme-card-hover hover:text-theme-text'
                 }`}
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-theme-accent' : 'text-theme-text-muted'}`} />
+                <Icon className={`w-5 h-5 ${isActive ? 'text-theme-accent' : 'text-theme-text-sec'}`} />
                 {item.name}
                 {item.id === 'simulator' && (
                   <span className="ml-auto w-2 h-2 rounded-full bg-status-orange alert-dot-blink" />
@@ -121,14 +121,14 @@ const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, acti
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-semibold text-theme-text truncate">{currentUser?.name}</p>
-              <p className="text-[10px] text-theme-text-muted font-mono capitalize truncate">{currentUser?.role}</p>
+              <p className="text-[10px] text-theme-text-sec font-mono capitalize truncate">{currentUser?.role}</p>
             </div>
             <button 
               onClick={() => {
                 clearSession();
                 onLogout();
               }}
-              className="text-theme-text-muted hover:text-status-red p-1.5 rounded-lg hover:bg-status-red-bg transition-colors"
+              className="text-theme-text-sec hover:text-status-red p-1.5 rounded-lg hover:bg-status-red-bg transition-colors"
               title="Logout"
             >
               <LogOut className="w-4 h-4" />
@@ -147,10 +147,25 @@ const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, acti
               <span className="text-xs text-theme-text-sec font-semibold uppercase tracking-wider">Surveillance Online</span>
             </div>
             {activeAlertsCount > 0 && (
-              <div className="flex items-center gap-1.5 bg-status-red-bg border border-status-red-border px-3 py-1 rounded-full text-xs font-bold text-status-red alert-dot-blink">
+              <button 
+                onClick={() => {
+                  setActiveTab('dashboard');
+                  setTimeout(() => {
+                    const el = document.getElementById('emergency-bulletins');
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      el.classList.add('ring-4', 'ring-status-red', 'ring-offset-4', 'ring-offset-theme-bg', 'scale-[1.02]');
+                      setTimeout(() => {
+                        el.classList.remove('ring-4', 'ring-status-red', 'ring-offset-4', 'ring-offset-theme-bg', 'scale-[1.02]');
+                      }, 2000);
+                    }
+                  }, 100);
+                }}
+                className="flex items-center gap-1.5 bg-status-red-bg hover:bg-red-500/20 border border-status-red-border px-3 py-1 rounded-full text-xs font-bold text-status-red alert-dot-blink cursor-pointer transition-all active:scale-95"
+              >
                 <AlertIcon className="w-3.5 h-3.5" />
                 <span>{activeAlertsCount} ACTIVE SURVEILLANCE ALERTS</span>
-              </div>
+              </button>
             )}
           </div>
 
@@ -173,12 +188,12 @@ const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, acti
               >
                 <span className="w-2 h-2 rounded-full bg-theme-accent" />
                 <span className="font-semibold">{currentUser?.email}</span>
-                <User className="w-4 h-4 text-theme-text-muted" />
+                <User className="w-4 h-4 text-theme-text-sec" />
               </button>
               {showProfile && (
                 <div className="absolute right-0 mt-2 w-48 bg-theme-card rounded-xl border border-theme-border shadow-lg py-1 text-sm text-theme-text-sec z-50 transition-colors duration-300">
                   <div className="px-4 py-2 border-b border-theme-border">
-                    <p className="text-xs text-theme-text-muted">Authenticated Session</p>
+                    <p className="text-xs text-theme-text-sec">Authenticated Session</p>
                     <p className="font-semibold truncate text-theme-text">{currentUser?.name}</p>
                   </div>
                   <button 
@@ -199,8 +214,8 @@ const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, acti
 
         {/* INFRASTRUCTURE STATUS RIBBON */}
         <div className="bg-theme-card border-b border-theme-border px-8 py-2.5 flex items-center gap-6 overflow-x-auto text-[10px] font-mono whitespace-nowrap z-10 transition-colors duration-300 shadow-sm">
-          <span className="text-theme-text-muted font-bold uppercase tracking-wider text-[9px] border-r border-theme-border pr-4 flex items-center gap-1.5 flex-shrink-0">
-            <Layers className="w-3.5 h-3.5 text-theme-text-muted" />
+          <span className="text-theme-text-sec font-bold uppercase tracking-wider text-[9px] border-r border-theme-border pr-4 flex items-center gap-1.5 flex-shrink-0">
+            <Layers className="w-3.5 h-3.5 text-theme-text-sec" />
             Infra Telemetry:
           </span>
           <div className="flex items-center gap-4">

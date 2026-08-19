@@ -232,7 +232,7 @@ const DevopsDashboard = () => {
           {/* SYSTEM SUMMARY CARDS */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 font-mono">
             <div className="medical-card bg-theme-card p-5 rounded-2xl border border-theme-border hover:border-theme-border-hover transition-colors">
-              <div className="flex justify-between items-start text-theme-text-muted text-[10px] font-bold uppercase tracking-wider">
+              <div className="flex justify-between items-start text-theme-text-sec text-[10px] font-bold uppercase tracking-wider">
                 <span>System Uptime</span>
                 <Clock className="w-4 h-4 text-theme-accent" />
               </div>
@@ -243,7 +243,7 @@ const DevopsDashboard = () => {
             </div>
 
             <div className="medical-card bg-theme-card p-5 rounded-2xl border border-theme-border hover:border-theme-border-hover transition-colors">
-              <div className="flex justify-between items-start text-theme-text-muted text-[10px] font-bold uppercase tracking-wider">
+              <div className="flex justify-between items-start text-theme-text-sec text-[10px] font-bold uppercase tracking-wider">
                 <span>CPU Load</span>
                 <Cpu className="w-4 h-4 text-status-red" />
               </div>
@@ -257,7 +257,7 @@ const DevopsDashboard = () => {
             </div>
 
             <div className="medical-card bg-theme-card p-5 rounded-2xl border border-theme-border hover:border-theme-border-hover transition-colors">
-              <div className="flex justify-between items-start text-theme-text-muted text-[10px] font-bold uppercase tracking-wider">
+              <div className="flex justify-between items-start text-theme-text-sec text-[10px] font-bold uppercase tracking-wider">
                 <span>Node.js Memory (Heap)</span>
                 <Server className="w-4 h-4 text-status-green" />
               </div>
@@ -268,7 +268,7 @@ const DevopsDashboard = () => {
             </div>
 
             <div className="medical-card bg-theme-card p-5 rounded-2xl border border-theme-border hover:border-theme-border-hover transition-colors">
-              <div className="flex justify-between items-start text-theme-text-muted text-[10px] font-bold uppercase tracking-wider">
+              <div className="flex justify-between items-start text-theme-text-sec text-[10px] font-bold uppercase tracking-wider">
                 <span>Database Health</span>
                 <Database className="w-4 h-4 text-status-amber" />
               </div>
@@ -282,7 +282,7 @@ const DevopsDashboard = () => {
 
           {/* WORLD OUTBREAK BEACON MAP */}
           <div className="medical-card bg-theme-card rounded-2xl border border-theme-border p-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 font-mono text-[9px] text-theme-text-muted uppercase tracking-widest pointer-events-none">
+            <div className="absolute top-0 right-0 p-4 font-mono text-[9px] text-theme-text-sec uppercase tracking-widest pointer-events-none">
               Biosurveillance Grid Overlay v4.11
             </div>
             
@@ -305,17 +305,17 @@ const DevopsDashboard = () => {
                 <line x1="400" y1="0" x2="400" y2="400" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 3" />
                 
                 {/* Greenland */}
-                <path d="M 220,30 L 280,35 L 250,70 L 210,65 Z" className="fill-theme-border/60 stroke-theme-border-hover transition-colors" strokeWidth="1" />
+                <path d="M 220,30 L 280,35 L 250,70 L 210,65 Z" className="fill-theme-card-hover stroke-theme-border-hover transition-colors" strokeWidth="1" />
                 {/* North America */}
-                <path d="M 50,50 L 150,50 L 220,120 L 180,180 L 150,150 L 110,180 L 70,120 Z" className="fill-theme-border/60 stroke-theme-border-hover transition-colors" strokeWidth="1" />
+                <path d="M 50,50 L 150,50 L 220,120 L 180,180 L 150,150 L 110,180 L 70,120 Z" className="fill-theme-card-hover stroke-theme-border-hover transition-colors" strokeWidth="1" />
                 {/* South America */}
-                <path d="M 180,180 L 220,180 L 240,250 L 200,380 L 170,300 L 160,220 Z" className="fill-theme-border/60 stroke-theme-border-hover transition-colors" strokeWidth="1" />
+                <path d="M 180,180 L 220,180 L 240,250 L 200,380 L 170,300 L 160,220 Z" className="fill-theme-card-hover stroke-theme-border-hover transition-colors" strokeWidth="1" />
                 {/* Eurasia */}
-                <path d="M 350,30 L 750,30 L 780,120 L 700,200 L 600,220 L 520,200 L 480,240 L 400,200 L 350,120 Z" className="fill-theme-border/60 stroke-theme-border-hover transition-colors" strokeWidth="1" />
+                <path d="M 350,30 L 750,30 L 780,120 L 700,200 L 600,220 L 520,200 L 480,240 L 400,200 L 350,120 Z" className="fill-theme-card-hover stroke-theme-border-hover transition-colors" strokeWidth="1" />
                 {/* Africa */}
-                <path d="M 380,150 L 480,150 L 520,220 L 480,320 L 440,350 L 380,250 Z" className="fill-theme-border/60 stroke-theme-border-hover transition-colors" strokeWidth="1" />
+                <path d="M 380,150 L 480,150 L 520,220 L 480,320 L 440,350 L 380,250 Z" className="fill-theme-card-hover stroke-theme-border-hover transition-colors" strokeWidth="1" />
                 {/* Australia */}
-                <path d="M 650,260 L 730,260 L 750,320 L 670,320 Z" className="fill-theme-border/60 stroke-theme-border-hover transition-colors" strokeWidth="1" />
+                <path d="M 650,260 L 730,260 L 750,320 L 670,320 Z" className="fill-theme-card-hover stroke-theme-border-hover transition-colors" strokeWidth="1" />
 
                 {/* Draw Outbreak pulsing Beacons */}
                 {outbreaks.map((h, i) => {
@@ -353,7 +353,7 @@ const DevopsDashboard = () => {
 
               {/* Hoverable / Legend box overlay */}
               <div className="absolute bottom-4 left-4 glass-panel bg-slate-950/80 p-3 rounded-lg border border-slate-800 text-[10px] font-mono space-y-1">
-                <p className="font-bold text-slate-300">BIO-HAZARD MAP LEGEND</p>
+                <p className="font-bold text-theme-text">BIO-HAZARD MAP LEGEND</p>
                 <div className="flex items-center gap-1.5 mt-1">
                   <span className="w-2.5 h-2.5 rounded-full bg-status-red-bg border border-status-red flex items-center justify-center">
                     <span className="w-1 h-1 bg-status-red rounded-full" />
@@ -381,7 +381,7 @@ const DevopsDashboard = () => {
               <div className="bg-theme-bg border border-theme-border rounded-xl p-4 flex items-center justify-between">
                 <div>
                   <h3 className="font-bold text-theme-text">React Frontend Portal</h3>
-                  <p className="text-[10px] text-theme-text-muted mt-1">Nginx Web Server // Port 3000</p>
+                  <p className="text-[10px] text-theme-text-sec mt-1">Nginx Web Server // Port 3000</p>
                 </div>
                 <div className="flex items-center gap-1.5 bg-status-green-bg border border-status-green-border px-2.5 py-1 rounded-full text-status-green">
                   <CheckCircle2 className="w-3.5 h-3.5" />
@@ -393,7 +393,7 @@ const DevopsDashboard = () => {
               <div className="bg-theme-bg border border-theme-border rounded-xl p-4 flex items-center justify-between">
                 <div>
                   <h3 className="font-bold text-theme-text">Express REST APIs</h3>
-                  <p className="text-[10px] text-theme-text-muted mt-1">PM2 Service Manager // Port 5005</p>
+                  <p className="text-[10px] text-theme-text-sec mt-1">PM2 Service Manager // Port 5005</p>
                 </div>
                 <div className="flex items-center gap-1.5 bg-status-green-bg border border-status-green-border px-2.5 py-1 rounded-full text-status-green">
                   <CheckCircle2 className="w-3.5 h-3.5" />
@@ -405,7 +405,7 @@ const DevopsDashboard = () => {
               <div className="bg-theme-bg border border-theme-border rounded-xl p-4 flex items-center justify-between">
                 <div>
                   <h3 className="font-bold text-theme-text">MongoDB Instance</h3>
-                  <p className="text-[10px] text-theme-text-muted mt-1">Stateful Data Engine // Port 27017</p>
+                  <p className="text-[10px] text-theme-text-sec mt-1">Stateful Data Engine // Port 27017</p>
                 </div>
                 <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full ${
                   live?.database?.status === 'Healthy' 
@@ -421,7 +421,7 @@ const DevopsDashboard = () => {
               <div className="bg-theme-bg border border-theme-border rounded-xl p-4 flex items-center justify-between">
                 <div>
                   <h3 className="font-bold text-theme-text">Prometheus Metrics Engine</h3>
-                  <p className="text-[10px] text-theme-text-muted mt-1">Scraper Daemon // Port 9090</p>
+                  <p className="text-[10px] text-theme-text-sec mt-1">Scraper Daemon // Port 9090</p>
                 </div>
                 <div className="flex items-center gap-1.5 bg-status-green-bg border border-status-green-border px-2.5 py-1 rounded-full text-status-green">
                   <CheckCircle2 className="w-3.5 h-3.5" />
@@ -433,7 +433,7 @@ const DevopsDashboard = () => {
               <div className="bg-theme-bg border border-theme-border rounded-xl p-4 flex items-center justify-between">
                 <div>
                   <h3 className="font-bold text-theme-text">Grafana Telemetry Boards</h3>
-                  <p className="text-[10px] text-theme-text-muted mt-1">Analytics Dashboard // Port 3001</p>
+                  <p className="text-[10px] text-theme-text-sec mt-1">Analytics Dashboard // Port 3001</p>
                 </div>
                 <div className="flex items-center gap-1.5 bg-status-green-bg border border-status-green-border px-2.5 py-1 rounded-full text-status-green">
                   <CheckCircle2 className="w-3.5 h-3.5" />
@@ -445,7 +445,7 @@ const DevopsDashboard = () => {
               <div className="bg-theme-bg border border-theme-border rounded-xl p-4 flex items-center justify-between">
                 <div>
                   <h3 className="font-bold text-theme-text">HashiCorp Vault Service</h3>
-                  <p className="text-[10px] text-theme-text-muted mt-1">Secrets Vault // Port 8200</p>
+                  <p className="text-[10px] text-theme-text-sec mt-1">Secrets Vault // Port 8200</p>
                 </div>
                 <div className="flex items-center gap-1.5 bg-status-green-bg border border-status-green-border px-2.5 py-1 rounded-full text-status-green">
                   <CheckCircle2 className="w-3.5 h-3.5" />
@@ -457,9 +457,9 @@ const DevopsDashboard = () => {
               <div className="bg-theme-bg border border-theme-border rounded-xl p-4 flex items-center justify-between">
                 <div>
                   <h3 className="font-bold text-theme-text">Elasticsearch DB</h3>
-                  <p className="text-[10px] text-theme-text-muted mt-1">Log Analyzer Indexer // Port 9200</p>
+                  <p className="text-[10px] text-theme-text-sec mt-1">Log Analyzer Indexer // Port 9200</p>
                 </div>
-                <div className="flex items-center gap-1.5 bg-theme-border border border-theme-border px-2.5 py-1 rounded-full text-theme-text-muted">
+                <div className="flex items-center gap-1.5 bg-theme-border border border-theme-border px-2.5 py-1 rounded-full text-theme-text-sec">
                   <Clock className="w-3.5 h-3.5" />
                   <span>STANDBY</span>
                 </div>
@@ -469,9 +469,9 @@ const DevopsDashboard = () => {
               <div className="bg-theme-bg border border-theme-border rounded-xl p-4 flex items-center justify-between">
                 <div>
                   <h3 className="font-bold text-theme-text">Kibana Logs Viewer</h3>
-                  <p className="text-[10px] text-theme-text-muted mt-1">Central Logger GUI // Port 5601</p>
+                  <p className="text-[10px] text-theme-text-sec mt-1">Central Logger GUI // Port 5601</p>
                 </div>
-                <div className="flex items-center gap-1.5 bg-theme-border border border-theme-border px-2.5 py-1 rounded-full text-theme-text-muted">
+                <div className="flex items-center gap-1.5 bg-theme-border border border-theme-border px-2.5 py-1 rounded-full text-theme-text-sec">
                   <Clock className="w-3.5 h-3.5" />
                   <span>STANDBY</span>
                 </div>
@@ -481,7 +481,7 @@ const DevopsDashboard = () => {
               <div className="bg-theme-bg border border-theme-border rounded-xl p-4 flex items-center justify-between">
                 <div>
                   <h3 className="font-bold text-theme-text">Jenkins CI Server</h3>
-                  <p className="text-[10px] text-theme-text-muted mt-1">Build Pipeline Scheduler // Port 8080</p>
+                  <p className="text-[10px] text-theme-text-sec mt-1">Build Pipeline Scheduler // Port 8080</p>
                 </div>
                 <div className="flex items-center gap-1.5 bg-status-green-bg border border-status-green-border px-2.5 py-1 rounded-full text-status-green">
                   <CheckCircle2 className="w-3.5 h-3.5" />
@@ -557,7 +557,7 @@ const DevopsDashboard = () => {
                   </tbody>
                 </table>
               ) : (
-                <div className="py-8 text-center text-theme-text-muted font-mono text-xs flex flex-col items-center justify-center gap-2">
+                <div className="py-8 text-center text-theme-text-sec font-mono text-xs flex flex-col items-center justify-center gap-2">
                   <AlertTriangle className="w-8 h-8 text-status-amber opacity-50" />
                   <p>No transactions registered under Prometheus counter metrics yet.</p>
                   <p className="text-[10px]">Interact with disease surveillance portals or hospital logs to register live requests.</p>
@@ -585,7 +585,7 @@ const DevopsDashboard = () => {
                   <span className="text-2xl">💻</span>
                 </div>
                 <h3 className="font-bold text-theme-text">React Frontend</h3>
-                <p className="text-[10px] text-theme-text-muted mt-2 leading-relaxed">Vite Bundler / Tailwind Styling Core Portal</p>
+                <p className="text-[10px] text-theme-text-sec mt-2 leading-relaxed">Vite Bundler / Tailwind Styling Core Portal</p>
               </div>
 
               <div className="flex flex-col items-center justify-center text-theme-text-sec font-bold text-lg">
@@ -603,7 +603,7 @@ const DevopsDashboard = () => {
                   <span className="text-2xl">⚙️</span>
                 </div>
                 <h3 className="font-bold text-theme-text">Node.js Backend</h3>
-                <p className="text-[10px] text-theme-text-muted mt-2 leading-relaxed">Middleware Auth, Controller Routers, prom-client registry</p>
+                <p className="text-[10px] text-theme-text-sec mt-2 leading-relaxed">Middleware Auth, Controller Routers, prom-client registry</p>
               </div>
             </div>
 
@@ -622,7 +622,7 @@ const DevopsDashboard = () => {
                   <span className="text-2xl">🔑</span>
                 </div>
                 <h3 className="font-bold text-theme-text">HashiCorp Vault</h3>
-                <p className="text-[10px] text-theme-text-muted mt-2 leading-relaxed">KV Engine store safeguarding JWT tokens and MongoDB URIs</p>
+                <p className="text-[10px] text-theme-text-sec mt-2 leading-relaxed">KV Engine store safeguarding JWT tokens and MongoDB URIs</p>
               </div>
 
               <div className="flex flex-col items-center justify-center text-theme-text-sec text-xs text-center px-4 font-mono leading-relaxed">
@@ -638,7 +638,7 @@ const DevopsDashboard = () => {
                   <span className="text-2xl">💾</span>
                 </div>
                 <h3 className="font-bold text-theme-text">MongoDB Database</h3>
-                <p className="text-[10px] text-theme-text-muted mt-2 leading-relaxed">Epidemiological records, hospitals, and responder resources</p>
+                <p className="text-[10px] text-theme-text-sec mt-2 leading-relaxed">Epidemiological records, hospitals, and responder resources</p>
               </div>
             </div>
 
@@ -651,26 +651,26 @@ const DevopsDashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 font-mono text-[11px]">
               <div className="bg-theme-bg border border-theme-border rounded-xl p-4 flex flex-col items-center text-center">
                 <h4 className="font-bold text-theme-text">Docker Compose</h4>
-                <p className="text-[9px] text-theme-text-muted mt-1">Build/Launch local sandbox isolation services</p>
+                <p className="text-[9px] text-theme-text-sec mt-1">Build/Launch local sandbox isolation services</p>
               </div>
               <div className="bg-theme-bg border border-theme-border rounded-xl p-4 flex flex-col items-center text-center">
                 <h4 className="font-bold text-theme-text">Kubernetes Pods</h4>
-                <p className="text-[9px] text-theme-text-muted mt-1">Orchestration namespace, node limits, HPA autoscaler</p>
+                <p className="text-[9px] text-theme-text-sec mt-1">Orchestration namespace, node limits, HPA autoscaler</p>
               </div>
               <div className="bg-theme-bg border border-theme-border rounded-xl p-4 flex flex-col items-center text-center">
                 <h4 className="font-bold text-theme-text">Jenkins Pipelines</h4>
-                <p className="text-[9px] text-theme-text-muted mt-1">Lint check ➔ Automated test runner ➔ Push registry CI/CD</p>
+                <p className="text-[9px] text-theme-text-sec mt-1">Lint check ➔ Automated test runner ➔ Push registry CI/CD</p>
               </div>
               <div className="bg-theme-bg border border-theme-border rounded-xl p-4 flex flex-col items-center text-center">
                 <h4 className="font-bold text-theme-text">ELK Logging</h4>
-                <p className="text-[9px] text-theme-text-muted mt-1">Logstash parser ingestion ➔ Elasticsearch indexing ➔ Kibana UI</p>
+                <p className="text-[9px] text-theme-text-sec mt-1">Logstash parser ingestion ➔ Elasticsearch indexing ➔ Kibana UI</p>
               </div>
             </div>
 
             {/* tier 4: METRICS SCRAPER */}
             <div className="bg-theme-bg border border-theme-border p-5 rounded-2xl text-center">
               <h3 className="font-bold text-status-red mb-2">Metrics Monitoring Loop</h3>
-              <p className="text-[10px] text-theme-text-muted max-w-xl mx-auto leading-relaxed">
+              <p className="text-[10px] text-theme-text-sec max-w-xl mx-auto leading-relaxed">
                 Prometheus scrapers query the backend <code className="text-theme-accent bg-theme-card-hover px-1 py-0.5 rounded">/metrics</code> route every 10s. Grafana reads directly from the Prometheus timeseries repository to display telemetry charts.
               </p>
               <div className="flex justify-center items-center gap-6 mt-4 font-bold text-xs text-theme-text-sec">
@@ -708,7 +708,7 @@ const DevopsDashboard = () => {
                   <div key={idx} className="bg-theme-bg border border-theme-border rounded-xl p-3.5 flex items-center justify-between text-xs">
                     <div>
                       <h4 className="font-bold text-theme-text">{container.name}</h4>
-                      <p className="text-[10px] text-theme-text-muted mt-1 font-mono">
+                      <p className="text-[10px] text-theme-text-sec mt-1 font-mono">
                         Port: {container.port} // Uptime: {container.uptime}
                       </p>
                     </div>
@@ -736,7 +736,7 @@ const DevopsDashboard = () => {
                   <div key={idx} className="bg-theme-bg border border-theme-border rounded-xl p-3.5 flex items-center justify-between text-xs">
                     <div>
                       <h4 className="font-bold text-theme-text truncate max-w-[200px]">{pod.name}</h4>
-                      <p className="text-[10px] text-theme-text-muted mt-1 font-mono">
+                      <p className="text-[10px] text-theme-text-sec mt-1 font-mono">
                         Namespace: {pod.namespace} // Age: {pod.age}
                       </p>
                     </div>
@@ -769,8 +769,8 @@ const DevopsDashboard = () => {
                   <div key={idx} className="bg-theme-bg border border-theme-border rounded-xl p-3.5 flex items-center justify-between text-xs">
                     <div>
                       <h4 className="font-bold text-theme-text">#{build.buildNo} - {build.jobName}</h4>
-                      <p className="text-[10px] text-theme-text-muted mt-1 font-mono flex items-center gap-1">
-                        <GitBranch className="w-3 h-3 text-theme-text-muted" />
+                      <p className="text-[10px] text-theme-text-sec mt-1 font-mono flex items-center gap-1">
+                        <GitBranch className="w-3 h-3 text-theme-text-sec" />
                         Branch: {build.branch} // Duration: {build.duration}
                       </p>
                     </div>
@@ -794,7 +794,7 @@ const DevopsDashboard = () => {
                   <div key={idx} className="bg-theme-bg border border-theme-border rounded-xl p-3.5 flex items-center justify-between text-xs">
                     <div>
                       <h4 className="font-bold text-theme-text">{dep.version} Deployment ({dep.commit})</h4>
-                      <p className="text-[10px] text-theme-text-muted mt-1 font-mono">
+                      <p className="text-[10px] text-theme-text-sec mt-1 font-mono">
                         Author: {dep.author} // Environment: {dep.environment}
                       </p>
                     </div>

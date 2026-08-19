@@ -94,7 +94,7 @@ const Surveillance = ({ reports, onAddReport, onUpdateReport, onDeleteReport }) 
             placeholder="Search country or pathogen..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-theme-bg border border-theme-border pl-10 pr-4 py-3 rounded-xl text-sm text-slate-100 placeholder-slate-400 focus:outline-none focus:border-emerald-500"
+            className="w-full bg-theme-bg border border-theme-border pl-10 pr-4 py-3 rounded-xl text-sm text-theme-text placeholder-theme-text-sec focus:outline-none focus:border-theme-accent text-theme-text"
           />
         </div>
 
@@ -103,7 +103,7 @@ const Surveillance = ({ reports, onAddReport, onUpdateReport, onDeleteReport }) 
           <select 
             value={filterCountry} 
             onChange={(e) => setFilterCountry(e.target.value)}
-            className="w-full bg-theme-bg border border-theme-border px-4 py-3 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-emerald-500"
+            className="w-full bg-theme-bg border border-theme-border px-4 py-3 rounded-xl text-sm text-theme-text focus:outline-none focus:border-theme-accent text-theme-text"
           >
             <option value="">All Countries</option>
             {countriesList.map((c, i) => <option key={i} value={c}>{c}</option>)}
@@ -115,7 +115,7 @@ const Surveillance = ({ reports, onAddReport, onUpdateReport, onDeleteReport }) 
           <select 
             value={filterDisease} 
             onChange={(e) => setFilterDisease(e.target.value)}
-            className="w-full bg-theme-bg border border-theme-border px-4 py-3 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-emerald-500"
+            className="w-full bg-theme-bg border border-theme-border px-4 py-3 rounded-xl text-sm text-theme-text focus:outline-none focus:border-theme-accent text-theme-text"
           >
             <option value="">All Pathogens</option>
             {diseasesList.map((d, i) => <option key={i} value={d}>{d}</option>)}
@@ -128,7 +128,7 @@ const Surveillance = ({ reports, onAddReport, onUpdateReport, onDeleteReport }) 
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-theme-border text-theme-text-sec text-xs uppercase font-semibold bg-theme-card/40">
+              <tr className="border-b border-theme-border text-theme-text-sec text-xs uppercase font-semibold bg-slate-100/40 dark:bg-slate-800/40">
                 <th className="p-4 pl-6">Region / Country</th>
                 <th className="p-4">Pathogen</th>
                 <th className="p-4 text-right">Cases</th>
@@ -138,10 +138,10 @@ const Surveillance = ({ reports, onAddReport, onUpdateReport, onDeleteReport }) 
                 <th className="p-4 pr-6 text-center">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800 text-sm">
+            <tbody className="divide-y divide-theme-border text-sm">
               {filteredReports.length > 0 ? (
                 filteredReports.map((report) => (
-                  <tr key={report._id} className="hover:bg-theme-bg/20">
+                  <tr key={report._id} className="hover:bg-theme-card-hover">
                     <td className="p-4 pl-6 font-semibold text-theme-text flex items-center gap-2">
                       <Map className="w-4 h-4 text-theme-text-sec" />
                       {report.country}
@@ -165,7 +165,7 @@ const Surveillance = ({ reports, onAddReport, onUpdateReport, onDeleteReport }) 
                         {hasRole(['admin']) && (
                           <button 
                             onClick={() => onDeleteReport(report._id)}
-                            className="p-1.5 rounded-lg bg-slate-850 hover:bg-status-red-bg text-status-red transition-colors"
+                            className="p-1.5 rounded-lg bg-theme-bg hover:bg-status-red-bg text-status-red transition-colors"
                             title="Delete"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -177,7 +177,7 @@ const Surveillance = ({ reports, onAddReport, onUpdateReport, onDeleteReport }) 
                 ))
               ) : (
                 <tr>
-                  <td colSpan="7" className="p-8 text-center text-theme-text-muted">
+                  <td colSpan="7" className="p-8 text-center text-theme-text-sec">
                     No surveillance reports found matching filter query.
                   </td>
                 </tr>
@@ -189,7 +189,7 @@ const Surveillance = ({ reports, onAddReport, onUpdateReport, onDeleteReport }) 
 
       {/* FORM DIALOG MODAL */}
       {showModal && (
-        <div className="fixed inset-0 bg-theme-bg/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
+        <div className="fixed inset-0 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
           <div className="bg-theme-card border border-theme-border w-full max-w-lg rounded-2xl shadow-2xl p-6 relative">
             <button 
               onClick={() => setShowModal(false)}
@@ -210,7 +210,7 @@ const Surveillance = ({ reports, onAddReport, onUpdateReport, onDeleteReport }) 
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
                   placeholder="e.g. United States"
-                  className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                 />
               </div>
 
@@ -222,7 +222,7 @@ const Surveillance = ({ reports, onAddReport, onUpdateReport, onDeleteReport }) 
                   value={disease}
                   onChange={(e) => setDisease(e.target.value)}
                   placeholder="e.g. COVID-19"
-                  className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                 />
               </div>
 
@@ -235,7 +235,7 @@ const Surveillance = ({ reports, onAddReport, onUpdateReport, onDeleteReport }) 
                     required
                     value={cases}
                     onChange={(e) => setCases(e.target.value)}
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
                 <div>
@@ -246,7 +246,7 @@ const Surveillance = ({ reports, onAddReport, onUpdateReport, onDeleteReport }) 
                     required
                     value={recoveries}
                     onChange={(e) => setRecoveries(e.target.value)}
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
                 <div>
@@ -257,7 +257,7 @@ const Surveillance = ({ reports, onAddReport, onUpdateReport, onDeleteReport }) 
                     required
                     value={deaths}
                     onChange={(e) => setDeaths(e.target.value)}
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
               </div>
@@ -271,7 +271,7 @@ const Surveillance = ({ reports, onAddReport, onUpdateReport, onDeleteReport }) 
                     required
                     value={reportDate}
                     onChange={(e) => setReportDate(e.target.value)}
-                    className="w-full bg-theme-bg border border-slate-750 pl-10 pr-4 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500 text-theme-text"
+                    className="w-full bg-theme-bg border border-theme-border pl-10 pr-4 p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
               </div>

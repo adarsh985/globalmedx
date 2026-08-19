@@ -230,6 +230,14 @@ const App = () => {
     } catch (e) { console.error(e); }
   };
 
+  // Alert Resolve/Dismiss
+  const handleResolveAlert = async (id) => {
+    try {
+      await alertAPI.updateAlert(id, { status: 'Resolved' });
+      loadData();
+    } catch (e) { console.error(e); }
+  };
+
   // Simulation Event Dispatcher
   const handleTriggerSimulation = async (type, country, disease) => {
     try {
@@ -245,7 +253,7 @@ const App = () => {
   const renderTabContent = () => {
     if (loading && !stats) {
       return (
-        <div className="h-96 flex flex-col items-center justify-center text-slate-400">
+        <div className="h-96 flex flex-col items-center justify-center text-theme-text-sec">
           <Loader2 className="w-10 h-10 animate-spin text-emerald-400 mb-3" />
           <p className="font-mono text-sm">Synchronizing Command Center Feed...</p>
         </div>
@@ -262,6 +270,7 @@ const App = () => {
             airportCount={airports.length}
             onTriggerSimulation={handleTriggerSimulation} 
             onTabChange={setActiveTab}
+            onResolveAlert={handleResolveAlert}
           />
         );
       case 'surveillance':
@@ -333,7 +342,7 @@ const App = () => {
           </div>
           <div className="text-left">
             <h1 className="text-2xl font-black tracking-wider text-white font-mono leading-none">GLOBALMED<span className="text-emerald-500">X</span></h1>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Pandemic Surveillance Network</p>
+            <p className="text-[10px] text-theme-text-sec font-bold uppercase tracking-widest mt-1">Pandemic Surveillance Network</p>
           </div>
         </div>
 
@@ -342,7 +351,7 @@ const App = () => {
           <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-emerald-500 to-teal-500" />
           
           <h2 className="text-2xl font-bold text-white tracking-tight text-center">Sign In to Dashboard</h2>
-          <p className="text-slate-400 text-sm text-center mt-1.5">Enter certified credentials to access data feeds.</p>
+          <p className="text-theme-text-sec text-sm text-center mt-1.5">Enter certified credentials to access data feeds.</p>
 
           {loginError && (
             <div className="mt-6 p-4 bg-rose-500/10 border border-rose-500/25 rounded-2xl text-xs font-semibold text-rose-400 text-center animate-shake">
@@ -352,26 +361,26 @@ const App = () => {
 
           <form onSubmit={handleLogin} className="space-y-5 mt-6">
             <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase mb-2">Email Address</label>
+              <label className="block text-xs font-semibold text-theme-text-sec uppercase mb-2">Email Address</label>
               <input 
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="operator@globalmedx.gov"
-                className="w-full bg-slate-800 border border-slate-700 p-3.5 rounded-xl text-sm focus:outline-none focus:border-emerald-500 text-slate-100 placeholder-slate-500 transition-colors"
+                className="w-full bg-theme-bg border border-theme-border p-3.5 rounded-xl text-sm focus:outline-none focus:border-emerald-500 text-theme-text placeholder-theme-text-sec transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase mb-2">Security Password</label>
+              <label className="block text-xs font-semibold text-theme-text-sec uppercase mb-2">Security Password</label>
               <input 
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full bg-slate-800 border border-slate-700 p-3.5 rounded-xl text-sm focus:outline-none focus:border-emerald-500 text-slate-100 placeholder-slate-500 transition-colors"
+                className="w-full bg-theme-bg border border-theme-border p-3.5 rounded-xl text-sm focus:outline-none focus:border-emerald-500 text-theme-text placeholder-theme-text-sec transition-colors"
               />
             </div>
 
@@ -393,10 +402,10 @@ const App = () => {
 
           {/* MOCK ACCOUNTS HINT FOOTER */}
           <div className="mt-8 pt-6 border-t border-slate-800 text-xs text-slate-500 space-y-2">
-            <p className="font-semibold text-slate-400 uppercase tracking-wider text-[10px]">Mock Credentials:</p>
-            <div className="flex justify-between font-mono bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/80">
+            <p className="font-semibold text-theme-text-sec uppercase tracking-wider text-[10px]">Mock Credentials:</p>
+            <div className="flex justify-between font-mono bg-slate-800/50 p-2.5 rounded-xl border border-slate-800/80">
               <div>
-                <p className="text-[10px] text-slate-400 uppercase font-semibold">Admin Account</p>
+                <p className="text-[10px] text-theme-text-sec uppercase font-semibold">Admin Account</p>
                 <button 
                   onClick={() => { setEmail('admin@globalmedx.gov'); setPassword('admin123'); }}
                   className="text-emerald-400 hover:underline mt-0.5 text-left text-xs"
@@ -405,13 +414,13 @@ const App = () => {
                 </button>
               </div>
               <div className="text-right border-l border-slate-800 pl-4">
-                <p className="text-[10px] text-slate-400 uppercase font-semibold">Password</p>
-                <p className="text-slate-300 mt-0.5 text-xs">admin123</p>
+                <p className="text-[10px] text-theme-text-sec uppercase font-semibold">Password</p>
+                <p className="text-theme-text mt-0.5 text-xs">admin123</p>
               </div>
             </div>
-            <div className="flex justify-between font-mono bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/80">
+            <div className="flex justify-between font-mono bg-slate-800/50 p-2.5 rounded-xl border border-slate-800/80">
               <div>
-                <p className="text-[10px] text-slate-400 uppercase font-semibold">Officer Account</p>
+                <p className="text-[10px] text-theme-text-sec uppercase font-semibold">Officer Account</p>
                 <button 
                   onClick={() => { setEmail('officer@globalmedx.gov'); setPassword('officer123'); }}
                   className="text-blue-400 hover:underline mt-0.5 text-left text-xs"
@@ -420,8 +429,8 @@ const App = () => {
                 </button>
               </div>
               <div className="text-right border-l border-slate-800 pl-4">
-                <p className="text-[10px] text-slate-400 uppercase font-semibold">Password</p>
-                <p className="text-slate-300 mt-0.5 text-xs">officer123</p>
+                <p className="text-[10px] text-theme-text-sec uppercase font-semibold">Password</p>
+                <p className="text-theme-text mt-0.5 text-xs">officer123</p>
               </div>
             </div>
           </div>

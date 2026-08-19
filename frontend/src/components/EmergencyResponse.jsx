@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Radio, Truck, Layers, Wrench, Check, AlertCircle, PlusCircle, Sparkles } from 'lucide-react';
+import { Radio, Truck, Layers, Wrench, Check, AlertCircle, PlusCircle, Sparkles, X } from 'lucide-react';
 
 const EmergencyResponse = ({ resources, incidents, onUpdateResource, onUpdateIncident }) => {
   const [showAllocateModal, setShowAllocateModal] = useState(false);
@@ -48,11 +48,11 @@ const EmergencyResponse = ({ resources, incidents, onUpdateResource, onUpdateInc
                 
                 <div className="grid grid-cols-2 gap-2 mt-4 text-xs font-medium">
                   <div>
-                    <p className="text-theme-text-muted">Total Stockpile</p>
+                    <p className="text-theme-text-sec">Total Stockpile</p>
                     <p className="text-theme-text mt-0.5 font-bold">{res.totalQuantity.toLocaleString()}</p>
                   </div>
                   <div>
-                    <p className="text-theme-text-muted">Allocated</p>
+                    <p className="text-theme-text-sec">Allocated</p>
                     <p className="text-status-green mt-0.5 font-bold">{res.allocatedQuantity.toLocaleString()}</p>
                   </div>
                 </div>
@@ -82,17 +82,17 @@ const EmergencyResponse = ({ resources, incidents, onUpdateResource, onUpdateInc
 
       {/* INCIDENTS TABLE */}
       <div className="glass-panel rounded-2xl border border-theme-border overflow-hidden">
-        <div className="p-6 border-b border-theme-border bg-theme-card/20 flex items-center justify-between">
+        <div className="p-6 border-b border-theme-border bg-theme-card flex items-center justify-between">
           <h2 className="text-lg font-bold flex items-center gap-2">
             <Radio className="w-5 h-5 text-status-red animate-pulse" />
             Active Emergency Incident Log
           </h2>
         </div>
         
-        <div className="divide-y divide-slate-800">
+        <div className="divide-y divide-theme-border">
           {incidents.length > 0 ? (
             incidents.map((inc) => (
-              <div key={inc._id} className="p-6 hover:bg-theme-bg/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-colors">
+              <div key={inc._id} className="p-6 hover:bg-theme-card-hover flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-colors">
                 <div className="flex gap-3 items-start">
                   <div className={`p-2 rounded-lg mt-0.5 ${
                     inc.status === 'Resolved' ? 'bg-status-green-bg text-status-green' : 'bg-status-red-bg text-status-red animate-pulse'
@@ -109,7 +109,7 @@ const EmergencyResponse = ({ resources, incidents, onUpdateResource, onUpdateInc
                       </span>
                     </div>
                     <p className="text-sm text-theme-text-sec mt-1 leading-relaxed">{inc.description}</p>
-                    <div className="flex gap-4 mt-3 text-xs text-theme-text-muted font-mono">
+                    <div className="flex gap-4 mt-3 text-xs text-theme-text-sec font-mono">
                       <span>Region: <strong className="text-theme-text">{inc.region}</strong></span>
                       <span>Reported By: <strong className="text-theme-text">{inc.reportedBy}</strong></span>
                     </div>
@@ -119,7 +119,7 @@ const EmergencyResponse = ({ resources, incidents, onUpdateResource, onUpdateInc
                 {inc.status !== 'Resolved' && (
                   <button 
                     onClick={() => handleResolveIncident(inc._id)}
-                    className="flex items-center gap-1.5 px-4 py-2 bg-status-green/10 border border-emerald-500/20 text-status-green hover:bg-status-green hover:text-theme-text rounded-lg text-xs font-semibold transition-all"
+                    className="flex items-center gap-1.5 px-4 py-2 bg-status-green-bg border border-status-green-border text-status-green hover:bg-status-green hover:text-theme-text rounded-lg text-xs font-semibold transition-all"
                   >
                     <Check className="w-4 h-4" />
                     Resolve Ticket
@@ -128,7 +128,7 @@ const EmergencyResponse = ({ resources, incidents, onUpdateResource, onUpdateInc
               </div>
             ))
           ) : (
-            <div className="p-12 text-center text-theme-text-muted">
+            <div className="p-12 text-center text-theme-text-sec">
               No emergency incidents reported.
             </div>
           )}
@@ -137,7 +137,7 @@ const EmergencyResponse = ({ resources, incidents, onUpdateResource, onUpdateInc
 
       {/* ALLOCATION DIALOG */}
       {showAllocateModal && selectedResource && (
-        <div className="fixed inset-0 bg-theme-bg/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
+        <div className="fixed inset-0 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
           <div className="bg-theme-card border border-theme-border w-full max-w-md rounded-2xl shadow-2xl p-6 relative">
             <button 
               onClick={() => setShowAllocateModal(false)}

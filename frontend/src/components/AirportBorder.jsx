@@ -74,7 +74,7 @@ const AirportBorder = ({ airports, onAddAirportLog, onUpdateAirportLog, onDelete
 
       {/* PORT OF ENTRY TABLE */}
       <div className="glass-panel rounded-2xl border border-theme-border overflow-hidden">
-        <div className="p-6 border-b border-theme-border bg-theme-card/20">
+        <div className="p-6 border-b border-theme-border bg-theme-card">
           <h2 className="text-lg font-bold flex items-center gap-2">
             <ClipboardCheck className="w-5 h-5 text-status-green" />
             Active Entry Point Screening Registry
@@ -83,7 +83,7 @@ const AirportBorder = ({ airports, onAddAirportLog, onUpdateAirportLog, onDelete
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-theme-border text-theme-text-sec text-xs uppercase font-semibold bg-theme-card/40">
+              <tr className="border-b border-theme-border text-theme-text-sec text-xs uppercase font-semibold bg-slate-100/40 dark:bg-slate-800/40">
                 <th className="p-4 pl-6">Transit Hub / Port</th>
                 <th className="p-4">Location</th>
                 <th className="p-4 text-right">Passengers Screened</th>
@@ -92,10 +92,10 @@ const AirportBorder = ({ airports, onAddAirportLog, onUpdateAirportLog, onDelete
                 <th className="p-4 text-center">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800 text-sm">
+            <tbody className="divide-y divide-theme-border text-sm">
               {airports.length > 0 ? (
                 airports.map((log) => (
-                  <tr key={log._id} className="hover:bg-theme-bg/20">
+                  <tr key={log._id} className="hover:bg-theme-card-hover">
                     <td className="p-4 pl-6 font-semibold text-theme-text flex items-center gap-2">
                       <PlaneTakeoff className="w-4.5 h-4.5 text-status-blue" />
                       {log.name}
@@ -127,7 +127,7 @@ const AirportBorder = ({ airports, onAddAirportLog, onUpdateAirportLog, onDelete
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="p-8 text-center text-theme-text-muted">
+                  <td colSpan="6" className="p-8 text-center text-theme-text-sec">
                     No border crossing inspection records available.
                   </td>
                 </tr>
@@ -139,7 +139,7 @@ const AirportBorder = ({ airports, onAddAirportLog, onUpdateAirportLog, onDelete
       
       {/* SCREENING MODAL */}
       {showModal && (
-        <div className="fixed inset-0 bg-theme-bg/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
+        <div className="fixed inset-0 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
           <div className="bg-theme-card border border-theme-border w-full max-w-lg rounded-2xl shadow-2xl p-6 relative">
             <button 
               onClick={() => setShowModal(false)}
@@ -160,7 +160,7 @@ const AirportBorder = ({ airports, onAddAirportLog, onUpdateAirportLog, onDelete
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. JFK Airport"
-                  className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                 />
               </div>
 
@@ -173,7 +173,7 @@ const AirportBorder = ({ airports, onAddAirportLog, onUpdateAirportLog, onDelete
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     placeholder="e.g. New York"
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
                 <div>
@@ -184,7 +184,7 @@ const AirportBorder = ({ airports, onAddAirportLog, onUpdateAirportLog, onDelete
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
                     placeholder="e.g. United States"
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
               </div>
@@ -198,7 +198,7 @@ const AirportBorder = ({ airports, onAddAirportLog, onUpdateAirportLog, onDelete
                     required
                     value={passengersScreened}
                     onChange={(e) => setPassengersScreened(e.target.value)}
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
                 <div>
@@ -209,7 +209,7 @@ const AirportBorder = ({ airports, onAddAirportLog, onUpdateAirportLog, onDelete
                     required
                     value={highRiskFlagged}
                     onChange={(e) => setHighRiskFlagged(e.target.value)}
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
                 <div>
@@ -220,7 +220,7 @@ const AirportBorder = ({ airports, onAddAirportLog, onUpdateAirportLog, onDelete
                     required
                     value={quarantined}
                     onChange={(e) => setQuarantined(e.target.value)}
-                    className="w-full bg-theme-bg border border-slate-750 p-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-theme-bg border border-theme-border p-3 rounded-xl text-sm focus:outline-none focus:border-theme-accent text-theme-text"
                   />
                 </div>
               </div>

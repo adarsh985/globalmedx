@@ -1,36 +1,42 @@
 import axios from 'axios';
 
-// Create central Axios instance
+// Central Axios instance
+// Local development: falls back to Vite's /api proxy
+// Production (Vercel): uses the Render backend
 const API = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Request Interceptor to attach JWT token
+// Attach JWT token to authenticated requests
 API.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('globalmedx_token');
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// API Endpoint Map
+// Authentication
 export const authAPI = {
   login: (credentials) => API.post('/auth/login', credentials),
   register: (userData) => API.post('/auth/register', userData),
   getProfile: () => API.get('/auth/profile'),
 };
 
+// Dashboard
 export const dashboardAPI = {
   getStats: () => API.get('/dashboard/stats'),
 };
 
+// Reports
 export const reportAPI = {
   getReports: (params) => API.get('/reports', { params }),
   createReport: (data) => API.post('/reports', data),
@@ -38,6 +44,7 @@ export const reportAPI = {
   deleteReport: (id) => API.delete(`/reports/${id}`),
 };
 
+// Hospitals
 export const hospitalAPI = {
   getHospitals: () => API.get('/hospitals'),
   registerHospital: (data) => API.post('/hospitals', data),
@@ -45,6 +52,7 @@ export const hospitalAPI = {
   deleteHospital: (id) => API.delete(`/hospitals/${id}`),
 };
 
+// Laboratories
 export const labAPI = {
   getLabs: () => API.get('/laboratories'),
   registerLab: (data) => API.post('/laboratories', data),
@@ -52,6 +60,7 @@ export const labAPI = {
   deleteLab: (id) => API.delete(`/laboratories/${id}`),
 };
 
+// Airports
 export const airportAPI = {
   getAirports: () => API.get('/airports'),
   createLog: (data) => API.post('/airports', data),
@@ -59,10 +68,12 @@ export const airportAPI = {
   deleteLog: (id) => API.delete(`/airports/${id}`),
 };
 
+// Analytics
 export const analyticsAPI = {
   getSummary: () => API.get('/analytics/summary'),
 };
 
+// Alerts
 export const alertAPI = {
   getAlerts: () => API.get('/alerts'),
   raiseAlert: (data) => API.post('/alerts', data),
@@ -70,10 +81,13 @@ export const alertAPI = {
   deleteAlert: (id) => API.delete(`/alerts/${id}`),
 };
 
+// Simulation
 export const simulationAPI = {
-  trigger: (type, country, disease) => API.post('/simulate', { type, country, disease }),
+  trigger: (type, country, disease) =>
+    API.post('/simulate', { type, country, disease }),
 };
 
+// Admin
 export const adminAPI = {
   getHealth: () => API.get('/health'),
   getUsers: () => API.get('/admin/users'),
@@ -83,6 +97,7 @@ export const adminAPI = {
   updateIncident: (id, data) => API.put(`/admin/incidents/${id}`, data),
 };
 
+// DevOps
 export const devopsAPI = {
   getMetrics: () => API.get('/devops/metrics'),
 };

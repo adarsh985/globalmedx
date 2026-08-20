@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 // Central Axios instance
-// Local development: falls back to Vite's /api proxy
-// Production (Vercel): uses the Render backend
+// Local development: uses Vite's /api proxy
+// Production: uses VITE_API_URL if configured, otherwise /api
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: {
@@ -10,7 +10,7 @@ const API = axios.create({
   },
 });
 
-// Attach JWT token to authenticated requests
+// Attach JWT token to every request
 API.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('globalmedx_token');
@@ -36,7 +36,7 @@ export const dashboardAPI = {
   getStats: () => API.get('/dashboard/stats'),
 };
 
-// Reports
+// Disease Reports
 export const reportAPI = {
   getReports: (params) => API.get('/reports', { params }),
   createReport: (data) => API.post('/reports', data),
@@ -84,7 +84,11 @@ export const alertAPI = {
 // Simulation
 export const simulationAPI = {
   trigger: (type, country, disease) =>
-    API.post('/simulate', { type, country, disease }),
+    API.post('/simulate', {
+      type,
+      country,
+      disease,
+    }),
 };
 
 // Admin
@@ -92,9 +96,11 @@ export const adminAPI = {
   getHealth: () => API.get('/health'),
   getUsers: () => API.get('/admin/users'),
   getResources: () => API.get('/admin/resources'),
-  updateResource: (id, data) => API.put(`/admin/resources/${id}`, data),
+  updateResource: (id, data) =>
+    API.put(`/admin/resources/${id}`, data),
   getIncidents: () => API.get('/admin/incidents'),
-  updateIncident: (id, data) => API.put(`/admin/incidents/${id}`, data),
+  updateIncident: (id, data) =>
+    API.put(`/admin/incidents/${id}`, data),
 };
 
 // DevOps

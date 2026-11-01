@@ -5,6 +5,7 @@ import {
   ShieldAlert as AlertIcon, Terminal, Sun, Moon, Layers
 } from 'lucide-react';
 import { clearSession } from '../utils/auth';
+import { mockStore } from '../utils/mockStore';
 
 const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, activeAlertsCount, alerts = [] }) => {
   const [showProfile, setShowProfile] = useState(false);
@@ -145,6 +146,11 @@ const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, acti
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-status-green animate-pulse" />
               <span className="text-xs text-theme-text-sec font-semibold uppercase tracking-wider">Surveillance Online</span>
+              {mockStore.isDemoMode() && (
+                <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">
+                  DEMO FAILOVER ACTIVE
+                </span>
+              )}
             </div>
             {activeAlertsCount > 0 && (
               <button 

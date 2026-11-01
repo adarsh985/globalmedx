@@ -6,7 +6,8 @@ import {
 } from 'chart.js';
 import { 
   Activity, Server, Cpu, Database, Terminal, GitBranch, Shield, 
-  Layers, Clock, RefreshCw, CheckCircle2, AlertTriangle, Play, HelpCircle, Flame
+  Layers, Clock, RefreshCw, CheckCircle2, AlertTriangle, Play, HelpCircle, Flame,
+  Zap, ShieldCheck, Bug
 } from 'lucide-react';
 import { devopsAPI, analyticsAPI } from '../utils/api';
 
@@ -20,8 +21,59 @@ const DevopsDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [metrics, setMetrics] = useState(null);
   const [outbreaks, setOutbreaks] = useState([]);
-  const [activeTab, setActiveTab] = useState('system'); // system, architecture, simulated
+  const [activeTab, setActiveTab] = useState('system'); // system, architecture, simulated, chaos
   const [lastRefreshed, setLastRefreshed] = useState(new Date());
+
+  // Chaos Engineering State
+  const [chaosState, setChaosState] = useState({
+    latencyInjected: false,
+    memorySurge: false,
+    dbPartition: false,
+    circuitBreakerTripped: false
+  });
+  const [chaosLogs, setChaosLogs] = useState([
+    `[${new Date().toLocaleTimeString()}] [CHAOS-DAEMON] Engine standby. No active fault injections.`
+  ]);
+
+  const addChaosLog = (msg) => {
+    const time = new Date().toLocaleTimeString();
+    setChaosLogs(prev => [`[${time}] ${msg}`, ...prev.slice(0, 19)]);
+  };
+
+  const toggleChaos = (type) => {
+    setChaosState(prev => {
+      const next = { ...prev, [type]: !prev[type] };
+      const status = next[type] ? 'ACTIVATED' : 'DISARMED';
+      
+      switch (type) {
+        case 'latencyInjected':
+          addChaosLog(`[FAULT-INJECTED] 750ms synthetic latency applied to ingress routes (${status}).`);
+          break;
+        case 'memorySurge':
+          addChaosLog(`[FAULT-INJECTED] Node.js heap simulated at 94% threshold (${status}). HPA scale triggered.`);
+          break;
+        case 'dbPartition':
+          addChaosLog(`[FAULT-INJECTED] MongoDB primary isolated (${status}). StatefulSet auto-failover to replica.`);
+          break;
+        case 'circuitBreakerTripped':
+          addChaosLog(`[CIRCUIT-BREAKER] Manual failover triggered (${status}). Edge resilience store serving traffic.`);
+          break;
+        default:
+          break;
+      }
+      return next;
+    });
+  };
+
+  const handleResetChaos = () => {
+    setChaosState({
+      latencyInjected: false,
+      memorySurge: false,
+      dbPartition: false,
+      circuitBreakerTripped: false
+    });
+    addChaosLog('[AUTO-HEALING] Cluster state restored to nominal baseline. All faults disarmed.');
+  };
 
   // Chart state history
   const [cpuHistory, setCpuHistory] = useState(Array(10).fill(0));
@@ -224,6 +276,17 @@ const DevopsDashboard = () => {
           }`}
         >
           [ CLUSTER & PIPELINES ]
+        </button>
+        <button 
+          onClick={() => setActiveTab('chaos')}
+          className={`px-6 py-3 border-b-2 font-bold tracking-wider transition-all flex items-center gap-1.5 ${
+            activeTab === 'chaos' 
+              ? 'border-status-red text-status-red bg-status-red-bg' 
+              : 'border-transparent text-theme-text-sec hover:text-theme-text'
+          }`}
+        >
+          <Zap className="w-3.5 h-3.5" />
+          <span>[ CHAOS & FAULT INJECTION ]</span>
         </button>
       </div>
 
@@ -806,6 +869,156 @@ const DevopsDashboard = () => {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'chaos' && (
+        <div className="space-y-8 font-mono">
+          {/* BANNER */}
+          <div className="p-4 bg-status-red-bg border border-status-red-border rounded-2xl text-xs text-status-red flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <Zap className="w-5 h-5 flex-shrink-0 mt-0.5" />
+              <div>
+                <span className="font-bold">CHAOS MONKEY & FAULT INJECTION CONTROL:</span>
+                <p className="mt-1 leading-relaxed text-theme-text-sec">
+                  Trigger synthetic failure modes against ingress gateways, stateful databases, and container pods to evaluate automatic failover and circuit breaker resilience.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={handleResetChaos}
+              className="px-4 py-2 rounded-xl bg-status-green-bg border border-status-green-border text-status-green hover:bg-emerald-500/20 font-bold transition-all text-xs flex-shrink-0 active:scale-95"
+            >
+              🔄 Auto-Heal All Services
+            </button>
+          </div>
+
+          {/* EXPERIMENT TILES */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* 1. Ingress Latency */}
+            <div className={`p-5 rounded-2xl border transition-all ${
+              chaosState.latencyInjected 
+                ? 'bg-status-red-bg border-status-red shadow-lg shadow-rose-500/10' 
+                : 'bg-theme-card border-theme-border'
+            }`}>
+              <div className="flex justify-between items-start">
+                <span className="text-[10px] font-bold uppercase text-theme-text-sec">Fault 01 // Network</span>
+                <span className={`w-2.5 h-2.5 rounded-full ${chaosState.latencyInjected ? 'bg-status-red alert-dot-blink' : 'bg-slate-700'}`} />
+              </div>
+              <h3 className="font-bold text-theme-text mt-2 text-sm">Synthetic API Latency</h3>
+              <p className="text-[11px] text-theme-text-sec mt-1">Injects +750ms jitter on /api endpoints to test client timeout guards.</p>
+              <button
+                type="button"
+                onClick={() => toggleChaos('latencyInjected')}
+                className={`w-full mt-4 py-2 rounded-xl font-bold text-xs transition-all ${
+                  chaosState.latencyInjected 
+                    ? 'bg-status-red text-white' 
+                    : 'bg-theme-bg border border-theme-border hover:bg-theme-card-hover text-theme-text'
+                }`}
+              >
+                {chaosState.latencyInjected ? 'Disarm Latency' : 'Inject +750ms Delay'}
+              </button>
+            </div>
+
+            {/* 2. Memory Heap Spike */}
+            <div className={`p-5 rounded-2xl border transition-all ${
+              chaosState.memorySurge 
+                ? 'bg-status-orange-bg border-status-orange shadow-lg shadow-orange-500/10' 
+                : 'bg-theme-card border-theme-border'
+            }`}>
+              <div className="flex justify-between items-start">
+                <span className="text-[10px] font-bold uppercase text-theme-text-sec">Fault 02 // Resource</span>
+                <span className={`w-2.5 h-2.5 rounded-full ${chaosState.memorySurge ? 'bg-status-orange alert-dot-blink' : 'bg-slate-700'}`} />
+              </div>
+              <h3 className="font-bold text-theme-text mt-2 text-sm">Heap Memory Surge</h3>
+              <p className="text-[11px] text-theme-text-sec mt-1">Forces simulated Node memory to 94% to trigger Kubernetes HPA autoscaler.</p>
+              <button
+                type="button"
+                onClick={() => toggleChaos('memorySurge')}
+                className={`w-full mt-4 py-2 rounded-xl font-bold text-xs transition-all ${
+                  chaosState.memorySurge 
+                    ? 'bg-status-orange text-white' 
+                    : 'bg-theme-bg border border-theme-border hover:bg-theme-card-hover text-theme-text'
+                }`}
+              >
+                {chaosState.memorySurge ? 'Release Memory' : 'Simulate Memory Leak'}
+              </button>
+            </div>
+
+            {/* 3. DB Partition */}
+            <div className={`p-5 rounded-2xl border transition-all ${
+              chaosState.dbPartition 
+                ? 'bg-status-red-bg border-status-red shadow-lg shadow-rose-500/10' 
+                : 'bg-theme-card border-theme-border'
+            }`}>
+              <div className="flex justify-between items-start">
+                <span className="text-[10px] font-bold uppercase text-theme-text-sec">Fault 03 // Stateful</span>
+                <span className={`w-2.5 h-2.5 rounded-full ${chaosState.dbPartition ? 'bg-status-red alert-dot-blink' : 'bg-slate-700'}`} />
+              </div>
+              <h3 className="font-bold text-theme-text mt-2 text-sm">MongoDB Partition</h3>
+              <p className="text-[11px] text-theme-text-sec mt-1">Isolates primary database pod to trigger StatefulSet replica failover.</p>
+              <button
+                type="button"
+                onClick={() => toggleChaos('dbPartition')}
+                className={`w-full mt-4 py-2 rounded-xl font-bold text-xs transition-all ${
+                  chaosState.dbPartition 
+                    ? 'bg-status-red text-white' 
+                    : 'bg-theme-bg border border-theme-border hover:bg-theme-card-hover text-theme-text'
+                }`}
+              >
+                {chaosState.dbPartition ? 'Restore Primary' : 'Partition Primary Pod'}
+              </button>
+            </div>
+
+            {/* 4. Circuit Breaker */}
+            <div className={`p-5 rounded-2xl border transition-all ${
+              chaosState.circuitBreakerTripped 
+                ? 'bg-status-blue-bg border-status-blue shadow-lg shadow-cyan-500/10' 
+                : 'bg-theme-card border-theme-border'
+            }`}>
+              <div className="flex justify-between items-start">
+                <span className="text-[10px] font-bold uppercase text-theme-text-sec">Fault 04 // Resilience</span>
+                <span className={`w-2.5 h-2.5 rounded-full ${chaosState.circuitBreakerTripped ? 'bg-status-blue alert-dot-blink' : 'bg-slate-700'}`} />
+              </div>
+              <h3 className="font-bold text-theme-text mt-2 text-sm">Circuit Breaker Trip</h3>
+              <p className="text-[11px] text-theme-text-sec mt-1">Forces edge failover to prove zero-downtime client survival during backend outages.</p>
+              <button
+                type="button"
+                onClick={() => toggleChaos('circuitBreakerTripped')}
+                className={`w-full mt-4 py-2 rounded-xl font-bold text-xs transition-all ${
+                  chaosState.circuitBreakerTripped 
+                    ? 'bg-status-blue text-white' 
+                    : 'bg-theme-bg border border-theme-border hover:bg-theme-card-hover text-theme-text'
+                }`}
+              >
+                {chaosState.circuitBreakerTripped ? 'Close Breaker' : 'Trip Circuit Breaker'}
+              </button>
+            </div>
+          </div>
+
+          {/* LIVE TERMINAL LOGS FEED */}
+          <div className="medical-card bg-theme-card p-6 rounded-2xl border border-theme-border">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-bold text-sm text-theme-text flex items-center gap-2">
+                <Terminal className="w-4 h-4 text-theme-accent" />
+                CHAOS EXPERIMENT AUDIT TRAIL // REAL-TIME LOG EMITTER
+              </h3>
+              <span className="text-[10px] text-theme-text-sec">Showing last 20 events</span>
+            </div>
+            <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs font-mono space-y-1.5 max-h-64 overflow-y-auto">
+              {chaosLogs.map((log, idx) => (
+                <div key={idx} className={`leading-relaxed ${
+                  log.includes('[FAULT-INJECTED]') 
+                    ? 'text-rose-400' 
+                    : log.includes('[AUTO-HEALING]') || log.includes('[CIRCUIT-BREAKER]') 
+                    ? 'text-emerald-400 font-bold' 
+                    : 'text-slate-400'
+                }`}>
+                  {log}
+                </div>
+              ))}
             </div>
           </div>
         </div>

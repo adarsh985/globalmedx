@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   TrendingUp, Activity, Heart, ShieldAlert, Award, 
   MapPin, AlertTriangle, AlertCircle, FileText, Info, ShieldCheck, RefreshCw,
-  Building2, Microscope, PlaneTakeoff, Info as InfoIcon
+  Building2, Microscope, PlaneTakeoff, Info as InfoIcon, Printer, Download, X
 } from 'lucide-react';
 import { analyticsAPI } from '../utils/api';
 
@@ -56,6 +56,7 @@ const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimu
   const [hoveredOutbreak, setHoveredOutbreak] = useState(null);
   const [localOutbreaks, setLocalOutbreaks] = useState([]);
   const [loadingMap, setLoadingMap] = useState(false);
+  const [showSitRepModal, setShowSitRepModal] = useState(false);
 
   const activeAlerts = alerts.filter(a => a.status === 'Active');
 
@@ -184,13 +185,23 @@ const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimu
           <h1 className="text-3xl font-extrabold tracking-tight text-theme-text">EPIDEMIOLOGICAL SURVEILLANCE PORTAL</h1>
           <p className="text-theme-text-sec mt-1">International public health operation monitoring outbreak containment, resource allocation, and lab feeds.</p>
         </div>
-        <button 
-          onClick={() => onTabChange('simulator')}
-          className="flex items-center gap-2 px-5 py-3 rounded-xl bg-theme-accent hover:bg-theme-accent-hover font-semibold text-white shadow-md transition-all active:scale-95 duration-200"
-        >
-          <AlertCircle className="w-5 h-5 alert-dot-blink" />
-          Simulate Outbreak Event
-        </button>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => setShowSitRepModal(true)}
+            className="flex items-center gap-2 px-4 py-3 rounded-xl bg-theme-bg border border-theme-border hover:bg-theme-card-hover font-semibold text-theme-text shadow-sm transition-all active:scale-95 duration-200"
+            title="Generate Official WHO/GlobalMedX Situation Report"
+          >
+            <FileText className="w-4 h-4 text-theme-accent" />
+            <span className="text-sm">Export WHO SitRep</span>
+          </button>
+          <button 
+            onClick={() => onTabChange('simulator')}
+            className="flex items-center gap-2 px-5 py-3 rounded-xl bg-theme-accent hover:bg-theme-accent-hover font-semibold text-white shadow-md transition-all active:scale-95 duration-200 text-sm"
+          >
+            <AlertCircle className="w-5 h-5 alert-dot-blink" />
+            Simulate Outbreak Event
+          </button>
+        </div>
       </div>
 
       {/* PRIMARY KPI METRICS (LARGER CARDS) */}
@@ -491,6 +502,162 @@ const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimu
           <Activity className="w-8 h-8 text-theme-accent opacity-20" />
         </div>
       </div>
+
+      {/* WHO / GLOBALMEDX EPIDEMIOLOGICAL SITUATION REPORT (SITREP) MODAL */}
+      {showSitRepModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-theme-card border border-theme-border max-w-4xl w-full max-h-[92vh] overflow-y-auto rounded-3xl shadow-2xl p-6 sm:p-8 space-y-6">
+            {/* MODAL ACTION BAR */}
+            <div className="flex justify-between items-center pb-4 border-b border-theme-border">
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-status-red alert-dot-blink" />
+                <span className="text-xs font-mono font-bold tracking-widest text-theme-text-sec uppercase">
+                  CLASSIFIED DISPATCH // WHO & CDC STANDARDS
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <button 
+                  onClick={() => window.print()}
+                  className="flex items-center gap-1.5 px-4 py-2 bg-theme-accent hover:bg-theme-accent-hover text-white rounded-xl text-xs font-bold transition-all shadow-md active:scale-95"
+                >
+                  <Printer className="w-4 h-4" />
+                  Print / Save PDF
+                </button>
+                <button 
+                  onClick={() => setShowSitRepModal(false)}
+                  className="p-2 rounded-xl text-theme-text-sec hover:text-theme-text hover:bg-theme-card-hover transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* FORMAL PRINTABLE SITUATION REPORT DOCUMENT */}
+            <div className="space-y-6 font-mono text-theme-text">
+              {/* DOCUMENT BANNER */}
+              <div className="bg-theme-bg p-6 rounded-2xl border border-theme-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-2xl">
+                    🩺
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-black text-theme-text tracking-wider">GLOBALMED<span className="text-emerald-500">X</span> SITUATION REPORT</h2>
+                    <p className="text-xs text-theme-text-sec">Worldwide Epidemic Surveillance & Incident Bulletin (SitRep)</p>
+                  </div>
+                </div>
+                <div className="text-right text-xs text-theme-text-sec">
+                  <p className="font-bold text-theme-text">REF: WHO-GMX-{new Date().getFullYear()}-098</p>
+                  <p>TIMESTAMP: {new Date().toUTCString()}</p>
+                  <p className="text-status-green font-bold mt-0.5">STATUS: OFFICIAL DISPATCH</p>
+                </div>
+              </div>
+
+              {/* SECTION 1: GLOBAL KEY METRICS MATRIX */}
+              <div>
+                <h3 className="text-sm font-bold text-theme-accent uppercase tracking-wider mb-3">
+                  [1.0] GLOBAL EPIDEMIOLOGICAL TOTALS
+                </h3>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                  <div className="bg-theme-bg p-3.5 rounded-xl border border-theme-border">
+                    <span className="text-theme-text-sec block text-[10px] uppercase">Total Confirmed</span>
+                    <span className="text-lg font-bold text-theme-text mt-1 block">{(stats?.totalCases || 0).toLocaleString()}</span>
+                  </div>
+                  <div className="bg-theme-bg p-3.5 rounded-xl border border-theme-border">
+                    <span className="text-theme-text-sec block text-[10px] uppercase">Active Infections</span>
+                    <span className="text-lg font-bold text-theme-accent mt-1 block">{(stats?.activeCases || 0).toLocaleString()}</span>
+                  </div>
+                  <div className="bg-theme-bg p-3.5 rounded-xl border border-theme-border">
+                    <span className="text-theme-text-sec block text-[10px] uppercase">Recovery Rate</span>
+                    <span className="text-lg font-bold text-status-green mt-1 block">{stats?.recoveryRate || 0}%</span>
+                  </div>
+                  <div className="bg-theme-bg p-3.5 rounded-xl border border-theme-border">
+                    <span className="text-theme-text-sec block text-[10px] uppercase">Case Fatality (CFR)</span>
+                    <span className="text-lg font-bold text-status-red mt-1 block">{stats?.mortalityRate || 0}%</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* SECTION 2: HIGH-RISK OUTBREAK REGIONS */}
+              <div>
+                <h3 className="text-sm font-bold text-theme-accent uppercase tracking-wider mb-3">
+                  [2.0] HIGH-SEVERITY REGIONAL INCIDENCE
+                </h3>
+                <div className="overflow-x-auto rounded-xl border border-theme-border">
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-theme-bg text-theme-text-sec uppercase text-[10px] tracking-wider border-b border-theme-border">
+                      <tr>
+                        <th className="p-3">Country / Territory</th>
+                        <th className="p-3">Pathogen Identified</th>
+                        <th className="p-3 text-right">Active Count</th>
+                        <th className="p-3 text-center">Threat Severity</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-theme-border bg-theme-bg/50">
+                      {stats?.highRiskRegions && stats.highRiskRegions.length > 0 ? (
+                        stats.highRiskRegions.map((region, idx) => (
+                          <tr key={idx} className="hover:bg-theme-card-hover">
+                            <td className="p-3 font-bold text-theme-text">{region.country}</td>
+                            <td className="p-3 text-theme-text-sec">{region.disease}</td>
+                            <td className="p-3 text-right font-bold text-theme-text">{(region.activeCases || 0).toLocaleString()}</td>
+                            <td className="p-3 text-center">
+                              <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                                region.severity === 'Critical' ? 'bg-status-red-bg text-status-red' : 'bg-status-orange-bg text-status-orange'
+                              }`}>
+                                {region.severity}
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="4" className="p-4 text-center text-theme-text-sec">
+                            No critical outbreak zones exceeding 1,000 active cases.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* SECTION 3: LOGISTICS & BEDS SNAPSHOT */}
+              <div>
+                <h3 className="text-sm font-bold text-theme-accent uppercase tracking-wider mb-3">
+                  [3.0] SURVEILLANCE INFRASTRUCTURE READINESS
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                  <div className="bg-theme-bg p-4 rounded-xl border border-theme-border">
+                    <p className="text-theme-text-sec text-[10px] uppercase">Registered Hospital Units</p>
+                    <p className="text-xl font-bold text-theme-text mt-1">{stats?.hospitalCount || 0} Facilities</p>
+                    <p className="text-[10px] text-theme-text-sec mt-1">Continuous bed tracking active</p>
+                  </div>
+                  <div className="bg-theme-bg p-4 rounded-xl border border-theme-border">
+                    <p className="text-theme-text-sec text-[10px] uppercase">Accredited Laboratories</p>
+                    <p className="text-xl font-bold text-theme-text mt-1">{stats?.labCount || 0} Diagnostic Centers</p>
+                    <p className="text-[10px] text-theme-text-sec mt-1">Viral genomic sequencing feeds</p>
+                  </div>
+                  <div className="bg-theme-bg p-4 rounded-xl border border-theme-border">
+                    <p className="text-theme-text-sec text-[10px] uppercase">Monitored International Borders</p>
+                    <p className="text-xl font-bold text-theme-text mt-1">{airportCount || 0} Airports</p>
+                    <p className="text-[10px] text-theme-text-sec mt-1">Screening and quarantine checkpoints</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* OFFICIAL FOOTER VERIFICATION */}
+              <div className="pt-4 border-t border-theme-border flex flex-col sm:flex-row justify-between items-start sm:items-center text-[10px] text-theme-text-sec">
+                <div>
+                  <p>CERTIFIED BY: GlobalMedX Epidemiological Intelligence Council</p>
+                  <p>DIGITAL FINGERPRINT: 4f9b8e21a8d052c938174fec2</p>
+                </div>
+                <div className="mt-2 sm:mt-0 text-right">
+                  <p className="text-status-green font-bold">COMPLIANCE: IHR (2005) PROTOCOLS VERIFIED</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

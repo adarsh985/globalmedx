@@ -238,6 +238,29 @@ const App = () => {
     } catch (e) { console.error(e); }
   };
 
+  // Resolve ALL Active Alerts at once
+  const handleResolveAllAlerts = async () => {
+    try {
+      const activeList = alerts.filter(a => a.status === 'Active');
+      await alertAPI.resolveAllAlerts(activeList);
+      await loadData();
+    } catch (e) { console.error(e); }
+  };
+
+  // Reset Demo Data / Reconnect Live Backend
+  const handleResetDemoOrReconnect = async (mode = 'reconnect') => {
+    try {
+      if (mode === 'reset') {
+        const { mockStore } = await import('./utils/mockStore');
+        mockStore.resetAllData();
+      } else {
+        const { mockStore } = await import('./utils/mockStore');
+        mockStore.setDemoMode(false);
+      }
+      await loadData();
+    } catch (e) { console.error(e); }
+  };
+
   // Simulation Event Dispatcher
   const handleTriggerSimulation = async (type, country, disease) => {
     try {
@@ -271,6 +294,7 @@ const App = () => {
             onTriggerSimulation={handleTriggerSimulation} 
             onTabChange={setActiveTab}
             onResolveAlert={handleResolveAlert}
+            onResolveAllAlerts={handleResolveAllAlerts}
           />
         );
       case 'surveillance':
@@ -321,7 +345,12 @@ const App = () => {
           />
         );
       case 'simulator':
-        return <Simulator onTriggerSimulation={handleTriggerSimulation} />;
+        return (
+          <Simulator 
+            onTriggerSimulation={handleTriggerSimulation} 
+            onResolveAllAlerts={handleResolveAllAlerts}
+          />
+        );
       case 'admin':
         return <AdminPortal health={health} users={users} />;
       case 'devops':
@@ -450,6 +479,8 @@ const App = () => {
       setActiveTab={setActiveTab}
       activeAlertsCount={activeAlertsCount}
       alerts={alerts}
+      onResolveAllAlerts={handleResolveAllAlerts}
+      onResetDemoOrReconnect={handleResetDemoOrReconnect}
     >
       {renderTabContent()}
     </Layout>

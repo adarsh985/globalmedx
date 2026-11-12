@@ -52,7 +52,7 @@ const AnimatedCounter = ({ value, duration = 1000 }) => {
   return <span>{typeof displayValue === 'number' ? displayValue.toLocaleString() : displayValue}</span>;
 };
 
-const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimulation, onTabChange, onResolveAlert }) => {
+const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimulation, onTabChange, onResolveAlert, onResolveAllAlerts }) => {
   const [hoveredOutbreak, setHoveredOutbreak] = useState(null);
   const [localOutbreaks, setLocalOutbreaks] = useState([]);
   const [loadingMap, setLoadingMap] = useState(false);
@@ -421,7 +421,21 @@ const GlobalDashboard = ({ stats, alerts, analytics, airportCount, onTriggerSimu
               <h2 className="text-lg font-bold flex items-center gap-2 text-theme-text">
                 <AlertTriangle className="text-status-red w-5 h-5 alert-dot-blink" />
                 Emergency Bulletins
+                {activeAlerts.length > 0 && (
+                  <span className="ml-1 px-2 py-0.5 text-[11px] font-mono rounded-full bg-status-red-bg text-status-red border border-status-red-border">
+                    {activeAlerts.length}
+                  </span>
+                )}
               </h2>
+              {activeAlerts.length > 0 && onResolveAllAlerts && (
+                <button
+                  onClick={onResolveAllAlerts}
+                  className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 transition-all active:scale-95"
+                  title="Mark all active alerts as Resolved"
+                >
+                  ✓ Resolve All ({activeAlerts.length})
+                </button>
+              )}
             </div>
             
             <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2">

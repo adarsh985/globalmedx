@@ -211,6 +211,16 @@ export const alertAPI = {
       () => API.delete(`/alerts/${id}`),
       () => mockStore.deleteAlert(id)
     ),
+  resolveAllAlerts: (activeAlerts = []) =>
+    withFallback(
+      async () => {
+        await Promise.all(
+          activeAlerts.map((a) => API.put(`/alerts/${a._id}`, { status: 'Resolved' }))
+        );
+        return { data: { success: true, message: 'All active alerts resolved' } };
+      },
+      () => mockStore.resolveAllAlerts()
+    ),
 };
 
 // Simulation

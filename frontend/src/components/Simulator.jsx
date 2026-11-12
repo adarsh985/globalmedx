@@ -96,7 +96,7 @@ const DEFAULT_SECTOR_INFO = {
   }
 };
 
-const Simulator = ({ onTriggerSimulation }) => {
+const Simulator = ({ onTriggerSimulation, onResolveAllAlerts }) => {
   const [loadingType, setLoadingType] = useState(null);
   const [feedback, setFeedback] = useState(null);
 
@@ -201,8 +201,11 @@ const Simulator = ({ onTriggerSimulation }) => {
     }
   };
 
-  const applyCountermeasure = (measureName, statusText) => {
+  const applyCountermeasure = async (measureName, statusText) => {
     setCountermeasureActive(measureName);
+    if (measureName === 'Disinfect Sector' && onResolveAllAlerts) {
+      await onResolveAllAlerts();
+    }
     if (activeLaunch) {
       const updatedLaunch = {
         ...activeLaunch,

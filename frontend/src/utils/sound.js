@@ -86,3 +86,4 @@ export const playSound = (name) => {
     // Audio is a progressive enhancement; never let it break the UI
   }
 };
+

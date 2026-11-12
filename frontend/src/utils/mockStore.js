@@ -107,6 +107,18 @@ export const mockStore = {
     localStorage.setItem(STORAGE_KEYS.IS_DEMO, status ? 'true' : 'false');
   },
 
+  resetAllData: () => {
+    setStorage(STORAGE_KEYS.REPORTS, INITIAL_REPORTS);
+    setStorage(STORAGE_KEYS.HOSPITALS, INITIAL_HOSPITALS);
+    setStorage(STORAGE_KEYS.LABS, INITIAL_LABS);
+    setStorage(STORAGE_KEYS.AIRPORTS, INITIAL_AIRPORTS);
+    setStorage(STORAGE_KEYS.ALERTS, INITIAL_ALERTS);
+    setStorage(STORAGE_KEYS.RESOURCES, INITIAL_RESOURCES);
+    setStorage(STORAGE_KEYS.INCIDENTS, INITIAL_INCIDENTS);
+    setStorage(STORAGE_KEYS.USERS, INITIAL_USERS);
+    return { success: true, message: 'All telemetry and alerts reset to nominal baseline.' };
+  },
+
   // Auth
   login: ({ email, password }) => {
     const lowerEmail = (email || '').trim().toLowerCase();
@@ -323,6 +335,12 @@ export const mockStore = {
     const updated = list.filter(item => item._id !== id);
     setStorage(STORAGE_KEYS.ALERTS, updated);
     return { success: true, message: 'Alert deleted' };
+  },
+  resolveAllAlerts: () => {
+    const list = getStorage(STORAGE_KEYS.ALERTS, INITIAL_ALERTS);
+    const updated = list.map(item => ({ ...item, status: 'Resolved' }));
+    setStorage(STORAGE_KEYS.ALERTS, updated);
+    return { success: true, message: 'All active alerts resolved', data: updated };
   },
 
   // Analytics Summary

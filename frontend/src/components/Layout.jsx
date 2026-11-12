@@ -8,7 +8,7 @@ import { clearSession } from '../utils/auth';
 import { mockStore } from '../utils/mockStore';
 import { playSound, isSoundEnabled, setSoundEnabled } from '../utils/sound';
 
-const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, activeAlertsCount, alerts = [] }) => {
+const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, activeAlertsCount, alerts = [], onResolveAllAlerts, onResetDemoOrReconnect }) => {
   const [showProfile, setShowProfile] = useState(false);
   const [soundOn, setSoundOn] = useState(() => isSoundEnabled());
   const prevAlertCount = useRef(null);
@@ -168,31 +168,57 @@ const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, acti
               <span className="w-2.5 h-2.5 rounded-full bg-status-green animate-pulse" />
               <span className="text-xs text-theme-text-sec font-semibold uppercase tracking-wider">Surveillance Online</span>
               {mockStore.isDemoMode() && (
-                <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">
-                  DEMO FAILOVER ACTIVE
-                </span>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => onResetDemoOrReconnect && onResetDemoOrReconnect('reconnect')}
+                    title="Click to retry connecting to Live Render Backend"
+                    className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 cursor-pointer transition-all"
+                  >
+                    DEMO FAILOVER ACTIVE
+                  </button>
+                  {onResetDemoOrReconnect && (
+                    <button
+                      onClick={() => onResetDemoOrReconnect('reset')}
+                      title="Reset Demo Data & Clear Accumulated Simulation Alerts to Baseline"
+                      className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-theme-bg hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 cursor-pointer transition-all"
+                    >
+                      ↺ RESET BASELINE
+                    </button>
+                  )}
+                </div>
               )}
             </div>
             {activeAlertsCount > 0 && (
-              <button 
-                onClick={() => {
-                  setActiveTab('dashboard');
-                  setTimeout(() => {
-                    const el = document.getElementById('emergency-bulletins');
-                    if (el) {
-                      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                      el.classList.add('ring-4', 'ring-status-red', 'ring-offset-4', 'ring-offset-theme-bg', 'scale-[1.02]');
-                      setTimeout(() => {
-                        el.classList.remove('ring-4', 'ring-status-red', 'ring-offset-4', 'ring-offset-theme-bg', 'scale-[1.02]');
-                      }, 2000);
-                    }
-                  }, 100);
-                }}
-                className="flex items-center gap-1.5 bg-status-red-bg hover:bg-red-500/20 border border-status-red-border px-3 py-1 rounded-full text-xs font-bold text-status-red alert-dot-blink cursor-pointer transition-all active:scale-95"
-              >
-                <AlertIcon className="w-3.5 h-3.5" />
-                <span>{activeAlertsCount} ACTIVE SURVEILLANCE ALERTS</span>
-              </button>
+              <div className="flex items-center gap-1.5">
+                <button 
+                  onClick={() => {
+                    setActiveTab('dashboard');
+                    setTimeout(() => {
+                      const el = document.getElementById('emergency-bulletins');
+                      if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        el.classList.add('ring-4', 'ring-status-red', 'ring-offset-4', 'ring-offset-theme-bg', 'scale-[1.02]');
+                        setTimeout(() => {
+                          el.classList.remove('ring-4', 'ring-status-red', 'ring-offset-4', 'ring-offset-theme-bg', 'scale-[1.02]');
+                        }, 2000);
+                      }
+                    }, 100);
+                  }}
+                  className="flex items-center gap-1.5 bg-status-red-bg hover:bg-red-500/20 border border-status-red-border px-3 py-1 rounded-full text-xs font-bold text-status-red alert-dot-blink cursor-pointer transition-all active:scale-95"
+                >
+                  <AlertIcon className="w-3.5 h-3.5" />
+                  <span>{activeAlertsCount} ACTIVE SURVEILLANCE ALERTS</span>
+                </button>
+                {onResolveAllAlerts && (
+                  <button
+                    onClick={onResolveAllAlerts}
+                    title="Resolve & Dismiss All Active Surveillance Alerts"
+                    className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-emerald-500/15 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 cursor-pointer transition-all active:scale-95"
+                  >
+                    ✓ RESOLVE ALL
+                  </button>
+                )}
+              </div>
             )}
           </div>
 

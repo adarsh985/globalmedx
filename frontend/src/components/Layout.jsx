@@ -1,14 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Activity, ShieldAlert, FileText, PlusCircle, Users, BarChart3, 
   Settings, LogOut, Radio, User, BedDouble, Microscope, PlaneTakeoff, 
-  ShieldAlert as AlertIcon, Terminal, Sun, Moon, Layers
+  ShieldAlert as AlertIcon, Terminal, Sun, Moon, Layers, Volume2, VolumeX
 } from 'lucide-react';
 import { clearSession } from '../utils/auth';
 import { mockStore } from '../utils/mockStore';
+import { playSound, isSoundEnabled, setSoundEnabled } from '../utils/sound';
 
 const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, activeAlertsCount, alerts = [] }) => {
   const [showProfile, setShowProfile] = useState(false);
+  const [soundOn, setSoundOn] = useState(() => isSoundEnabled());
+  const prevAlertCount = useRef(null);
+
+  const toggleSound = () => {
+    const next = !soundOn;
+    setSoundOn(next);
+    setSoundEnabled(next);
+    if (next) playSound('success'); // audible confirmation that sound is back on
+  };
+
+  // Emergency siren whenever the number of active alerts goes UP.
+  // The first load only records a baseline so logging in is silent.
+  useEffect(() => {
+    if (prevAlertCount.current === null) {
+      if (alerts.length > 0) prevAlertCount.current = activeAlertsCount;
+      return;
+    }
+    if (activeAlertsCount > prevAlertCount.current) playSound('alarm');
+    prevAlertCount.current = activeAlertsCount;
+  }, [activeAlertsCount, alerts.length]);
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('theme');
     if (saved) return saved;
@@ -97,7 +118,7 @@ const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, acti
             return (
               <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => { playSound('tab'); setActiveTab(item.id); }}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-250 ${
                   isActive 
                     ? 'bg-emerald-500/10 text-theme-accent border-l-4 border-theme-accent pl-3' 
@@ -176,6 +197,16 @@ const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, acti
           </div>
 
           <div className="flex items-center gap-4">
+            {/* SOUND EFFECTS TOGGLE */}
+            <button 
+              onClick={toggleSound}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-theme-bg border border-theme-border text-xs font-mono font-bold text-theme-text-sec hover:bg-theme-card-hover transition-all focus:outline-none"
+              title={soundOn ? 'Mute command-center sound effects' : 'Enable command-center sound effects'}
+            >
+              {soundOn ? <Volume2 className="w-4 h-4 text-theme-accent" /> : <VolumeX className="w-4 h-4 text-theme-text-sec" />}
+              <span className="hidden md:inline">SFX {soundOn ? 'ON' : 'OFF'}</span>
+            </button>
+
             {/* THEME TOGGLE BUTTON */}
             <button 
               onClick={toggleTheme}

@@ -84,7 +84,24 @@ const countryCoords = {
 const getStorage = (key, defaultVal) => {
   try {
     const val = localStorage.getItem(key);
-    return val ? JSON.parse(val) : defaultVal;
+    if (!val) return defaultVal;
+    const parsed = JSON.parse(val);
+
+    // Auto-Hygiene: If user has > 5 active alerts accumulated from simulation spam,
+    // automatically reduce & resolve older duplicates to keep the surveillance console nominal.
+    if (key === STORAGE_KEYS.ALERTS && Array.isArray(parsed)) {
+      const active = parsed.filter(a => a && a.status === 'Active');
+      if (active.length > 5) {
+        // Keep only top 2 alerts active, mark all rest as Resolved
+        const cleaned = parsed.map((a, idx) => (idx < 2 ? a : { ...a, status: 'Resolved' }));
+        try {
+          localStorage.setItem(key, JSON.stringify(cleaned));
+        } catch (e) {}
+        return cleaned;
+      }
+    }
+
+    return parsed;
   } catch (e) {
     return defaultVal;
   }

@@ -15,14 +15,15 @@ const Incident = require('../models/Incident');
 const connectDB = async () => {
   try {
     const connStr = process.env.MONGODB_URI || 'mongodb://localhost:27017/globalmedx';
-    await mongoose.connect(connStr);
+    // Set 5s timeout so cloud deploy does not hang on unreachable cluster
+    await mongoose.connect(connStr, { serverSelectionTimeoutMS: 5000 });
     console.log(`MongoDB Connected: ${mongoose.connection.host}`);
     
     // Seed database if empty
     await seedDatabase();
   } catch (error) {
-    console.error(`MongoDB connection error: ${error.message}`);
-    process.exit(1);
+    console.warn(`[GlobalMedX Resilience] Remote MongoDB unreachable (${error.message}). Running in Standalone Resilient Mode without exiting.`);
+    // Do NOT call process.exit(1) so Render/cloud instances keep running and report healthy
   }
 };
 

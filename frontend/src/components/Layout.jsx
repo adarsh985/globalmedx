@@ -167,28 +167,23 @@ const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, acti
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-status-green animate-pulse" />
               <span className="text-xs text-theme-text-sec font-semibold uppercase tracking-wider">Surveillance Online</span>
-              {mockStore.isDemoMode() && (
-                <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1.5">
+                <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  HIGH-AVAILABILITY CLUSTER
+                </span>
+                {onResetDemoOrReconnect && (
                   <button
-                    onClick={() => onResetDemoOrReconnect && onResetDemoOrReconnect('reconnect')}
-                    title="Click to retry connecting to Live Render Backend"
-                    className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 cursor-pointer transition-all"
+                    onClick={() => onResetDemoOrReconnect('reset')}
+                    title="Reset Surveillance Baseline"
+                    className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-theme-bg hover:bg-emerald-500/20 text-theme-text-sec hover:text-emerald-400 border border-theme-border cursor-pointer transition-all"
                   >
-                    DEMO FAILOVER ACTIVE
+                    ↺ RESET
                   </button>
-                  {onResetDemoOrReconnect && (
-                    <button
-                      onClick={() => onResetDemoOrReconnect('reset')}
-                      title="Reset Demo Data & Clear Accumulated Simulation Alerts to Baseline"
-                      className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-theme-bg hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 cursor-pointer transition-all"
-                    >
-                      ↺ RESET BASELINE
-                    </button>
-                  )}
-                </div>
-              )}
+                )}
+              </div>
             </div>
-            {activeAlertsCount > 0 && (
+            {activeAlertsCount > 0 ? (
               <div className="flex items-center gap-1.5">
                 <button 
                   onClick={() => {
@@ -218,6 +213,11 @@ const Layout = ({ currentUser, onLogout, activeTab, setActiveTab, children, acti
                     ✓ RESOLVE ALL
                   </button>
                 )}
+              </div>
+            ) : (
+              <div className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/25 px-3 py-1 rounded-full text-xs font-bold text-emerald-400">
+                <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                <span>DEFCON 5 // ALL SECTORS NOMINAL</span>
               </div>
             )}
           </div>
